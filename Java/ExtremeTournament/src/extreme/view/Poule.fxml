@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="684.0" prefWidth="1298.0" stylesheets="@../CSS/cssButtom.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="extreme.view.PouleController">
+<AnchorPane id="AnchorPane" prefHeight="682.0" prefWidth="1213.0" stylesheets="@../CSS/cssButtom.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="extreme.view.PouleController">
    <children>
       <VBox layoutY="88.0" opacity="0.74" prefHeight="629.0" prefWidth="277.0" style="-fx-background-color: #414349;">
          <children>

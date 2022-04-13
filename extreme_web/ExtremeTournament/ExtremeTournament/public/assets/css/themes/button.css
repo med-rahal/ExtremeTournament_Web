@@ -1,0 +1,13 @@
+.button_table {
+    background-color: royalblue; /* Blue background */
+    border: 4px; /* Remove borders */
+    color: white; /* White text */
+    padding:  12px 8px; /* Some padding */
+    font-size: 8px; /* Set a font size */
+    cursor: pointer; /* Mouse pointer on hover */
+}
+
+/* Darker background on mouse-over */
+.button_table:hover {
+    background-color: RoyalBlue;
+}

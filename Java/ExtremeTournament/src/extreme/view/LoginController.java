@@ -127,10 +127,10 @@ public class LoginController implements Initializable {
 
                 } else {
                     try {
-                        FXMLLoader LOADER = new FXMLLoader(getClass().getResource("EquipeFXML.fxml"));
+                        FXMLLoader LOADER = new FXMLLoader(getClass().getResource("DashboardAD.fxml"));
                         Parent root = LOADER.load();
                         Scene sc = new Scene(root);
-                        EquipeFXMLController adminctr = LOADER.getController();
+                        DashboardADController adminctr = LOADER.getController();
                         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
                         window.setScene(sc);
                         window.show();

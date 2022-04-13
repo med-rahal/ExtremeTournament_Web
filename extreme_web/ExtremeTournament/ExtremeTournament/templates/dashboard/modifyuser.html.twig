@@ -1,0 +1,125 @@
+{% extends 'baseback.html.twig'%}
+
+{% block body %}
+
+    <head>
+        <style>
+            table {
+                border-collapse: separate;
+                border-spacing: 0 15px;
+            }
+
+            th {
+                background-color: #0a0a0a;
+            }
+
+            td {
+
+                padding: 4px;
+            }
+
+            .may {
+                background: rgba(255, 255, 255, 0.46);
+                border-radius: 16px;
+                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+                backdrop-filter: blur(8.2px);
+                -webkit-backdrop-filter: blur(8.2px);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+            }
+
+            body {
+
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-size: 100% 100%;
+            }
+
+        </style>
+    </head>
+
+
+
+    <br><br><br><br><br><br><br><br>
+
+    <center>
+        {{ form_start(form,{'attr':{'class':'form-horizontal','novalidate':'novalidate'}}) }}
+
+        <table class="col-4 may">
+            <tr><td colspan="3" style="text-align: center"><h4 class="mb-4" style="color:#350A4E" align="center"><i class="fa fa-user" style="color: #DC904B"></i> Modify User<i class="fa fa-user" style="color: #DC904B"></i></h4>
+                </td></tr>
+
+            <tr>
+
+                <td>{{ form_label(form.nom,"Nom") }}</td>
+                <td>{{ form_widget(form.nom) }}</td>
+                <td> {{ form_errors(form.nom) }}</td>
+            </tr>
+            <tr>
+                <td>{{ form_label(form.prenom,"Prenom") }}</td>
+                <td>{{ form_widget(form.prenom) }}</td>
+                <td> {{ form_errors(form.prenom) }}</td>
+            </tr>
+            <tr>
+                <td>{{ form_label(form.username,"Username") }}</td>
+                <td>{{ form_widget(form.username) }}</td>
+                <td> {{ form_errors(form.username) }}</td>
+            </tr>
+            <tr>
+                <td>{{ form_label(form.date_naissance,"Date de Naissance") }}</td>
+                <td>{{ form_widget(form.date_naissance) }}</td>
+                <td>{{ form_errors(form.date_naissance) }} </td>
+            </tr>
+            <tr>
+                <td>{{ form_label(form.sexe,"Sexe") }}</td>
+                <td>{{ form_widget(form.sexe) }}</td>
+                <td> {{ form_errors(form.sexe) }} </td>
+            </tr>
+
+            <tr>
+                <td>{{ form_label(form.roles,"Roles") }}</td>
+                <td>{{ form_widget(form.roles) }}</td>
+                <td> {{ form_errors(form.roles) }} </td>
+            </tr>
+
+            <tr>
+                <td>{{ form_label(form.email,"Email") }}</td>
+                <td>{{ form_widget(form.email) }}</td>
+                <td> {{ form_errors(form.email) }} </td>
+            </tr>
+
+            <tr>
+                <td>{{ form_label(form.passw,"Password") }}</td>
+                <td>{{ form_widget(form.passw) }}</td>
+                <td> {{ form_errors(form.passw) }} </td>
+            </tr>
+
+            <tr>
+                <td>{{ form_label(form.tel,"Telephone") }}</td>
+                <td>{{ form_widget(form.tel) }}</td>
+                <td> {{ form_errors(form.tel) }} </td>
+            </tr>
+
+            <tr>
+                <td>{{ form_label(form.adresse,"Adresse") }}</td>
+                <td>{{ form_widget(form.adresse) }}</td>
+                <td> {{ form_errors(form.adresse) }} </td>
+            </tr>
+
+            <tr>
+                <td>{{ form_label(form.image,"Image") }}</td>
+                <td>{{ form_widget(form.image) }}</td>
+                <td> {{ form_errors(form.image) }} </td>
+            </tr>
+        </table>
+        <br>
+        {{ form_end(form) }}
+        <br>
+
+    </center>
+
+
+
+{% endblock %}
+
+
+

@@ -1,0 +1,29 @@
+
+
+{% block title %}Hello SecurityController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="card-body">
+    <form action="{{ path('login_security') }}" method="post">
+
+        <div class="form-group">
+            <label class="form-label" for="exampleInputname">Adresse email</label>
+            <input placeholder="Adresse email..." requied name="_username"
+                   type="text" class="form-control">
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="exampleInputname">Mot de passe</label>
+            <input placeholder="Mode de passe..." requied name="_password"
+                   type="password" class="form-control">
+        </div>
+        <div class="form-footer mt-2">
+            <button type="submit" class="btn btn-primary btn-block">Connexion</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
