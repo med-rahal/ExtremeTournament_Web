@@ -20,11 +20,11 @@ class UserType extends AbstractType
             ->add('username')
             ->add('date_naissance',BirthdayType::class)
             ->add('sexe')
-            ->add('roles',ChoiceType::class,array(
+            ->add('type',ChoiceType::class,array(
                     'choices'  => array(
                     'administrateur'   => 'administrateur',
                     'participant' => 'participant',
-                    'proprietaire'   => 'proprietaire',
+                    'proprietaire'  => 'proprietaire',
                 ),
 
             ))

@@ -56,12 +56,12 @@
                 {{ form_start(formA) }}
                 <form class="account-form">
                     <div class="form-group">
-                        {{ form_label(formA.username,'Nom') }}
+                        {{ form_label(formA.nom,'Nom') }}
                         {{ form_widget(formA.nom ,{'attr': {'class': '' , 'placeholder' : 'Nom'}} ) }}
                         {{ form_errors(formA.nom)}}
                     </div>
                     <div class="form-group">
-                        {{ form_label(formA.username,'Prenom') }}
+                        {{ form_label(formA.prenom,'Prenom') }}
                         {{ form_widget(formA.prenom , {'attr': {'class': '' , 'placeholder' : 'Prenom'}} ) }}
                         {{ form_errors(formA.prenom)}}
                     </div>
@@ -80,7 +80,6 @@
                         {{ form_widget(formA.sexe , {'attr': {'class': '' , 'placeholder' : 'Sexe'}} ) }}
                         {{ form_errors(formA.sexe)}}
                     </div>
-
                     <div class="form-group">
                         {{ form_label(formA.email,'Email') }}
                         {{ form_widget(formA.email , {'attr': {'class': '' , 'placeholder' : 'Email'}} ) }}

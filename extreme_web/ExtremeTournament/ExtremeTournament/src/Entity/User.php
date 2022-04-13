@@ -5,11 +5,13 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Exception;
+use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 
 
@@ -17,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
  */
-class User implements UserInterface
+class User implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id
@@ -55,7 +57,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=30)
      */
-    private $roles;
+    private $type;
 
     /**
      * @ORM\Column(type="string", length=50)
@@ -186,6 +188,20 @@ class User implements UserInterface
 
         return $this;
     }
+
+    public function getType(): ? string
+    {
+        return $this->type;
+
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
 
     public function getRoles()
     {
@@ -418,21 +434,41 @@ class User implements UserInterface
     }
 
 
-        public function getPassword():string
-        {
-            return $this->passw;
-        }
+    public function getPassword():string
+    {
+        return $this->passw;
+    }
 
-        public function getSalt()
-        {
+    public function getSalt()
+    {
 
-        }
+    }
 
-        public function eraseCredentials()
-        {
+    public function eraseCredentials()
+    {
 
-        }
+    }
 
+    public function serialize()
+    {
+        return serialize([
+           $this->id_user,
+            $this->username,
+            $this->email,
+            $this->passw
+        ]);
+
+    }
+
+    public function unserialize($data)
+    {
+        list(
+            $this->id_user,
+            $this->username,
+            $this->email,
+            $this->passw
+            ) = unserialize($data,['allowed_classes'=> false]);
+    }
 }
 
 

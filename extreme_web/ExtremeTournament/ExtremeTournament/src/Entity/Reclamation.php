@@ -125,12 +125,12 @@ class Reclamation
         return $this;
     }
 
-    public function getIdUser(): ?int
+    public function getIdUser(): ? int
     {
         return $this->id_user;
     }
 
-    public function setIdUser(int $id_user): self
+    public function setIdUser($id_user): self
     {
         $this->id_user = $id_user;
 

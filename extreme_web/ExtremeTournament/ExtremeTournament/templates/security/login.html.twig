@@ -1,29 +1,113 @@
+{% extends 'base.html.twig' %}
 
-
-{% block title %}Hello SecurityController!{% endblock %}
+{% block title %}Login!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <body>
 
-<div class="card-body">
-    <form action="{{ path('login_security') }}" method="post">
+    <!-- preloader start here -->
+    <div class="preloader">
+        <div class="preloader-inner">
+            <div class="preloader-icon">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <!-- preloader ending here -->
 
-        <div class="form-group">
-            <label class="form-label" for="exampleInputname">Adresse email</label>
-            <input placeholder="Adresse email..." requied name="_username"
-                   type="text" class="form-control">
+    <!-- scrollToTop start here -->
+    <a href="#" class="scrollToTop"><i class="icofont-rounded-up"></i></a>
+    <!-- scrollToTop ending here -->
+
+    <!-- ==========shape image Starts Here========== -->
+    <div class="body-shape">
+        <img src="assets/images/shape/body-shape.png" alt="shape">
+    </div>
+    <!-- ==========shape image end Here========== -->
+
+
+    <!-- ===========Banner Section start Here========== -->
+    <section class="pageheader-section" style="background-image: url(assets/images/pageheader/bg.jpg);">
+        <div class="container">
+            <div class="section-wrapper text-center text-uppercase">
+                <h2 class="pageheader-title">Login for gaming</h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center mb-0">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Login</li>
+                    </ol>
+                </nav>
+            </div>
         </div>
-        <div class="form-group">
-            <label class="form-label" for="exampleInputname">Mot de passe</label>
-            <input placeholder="Mode de passe..." requied name="_password"
-                   type="password" class="form-control">
+    </section>
+    <!-- ===========Banner Section Ends Here========== -->
+
+    <!-- Login Section Section Starts Here -->
+    <div class="login-section padding-top padding-bottom">
+        <div class=" container">
+            <div class="account-wrapper">
+                <h3 class="title">Login</h3>
+                <form action="{{ path('login_security') }}" method="post">
+                    <div class="form-group">
+                        <label class="form-label" for="exampleInputname">Adresse email</label>
+                        <input  placeholder="Username..." name="_username"
+                                type="text" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="exampleInputname">Mot de passe</label>
+                        <input placeholder="Mot de passe..." name="_password"
+                               type="password" class="form-control">
+
+
+                    </div>
+
+                    <div class="form-group">
+                        <div class="d-flex justify-content-between flex-wrap pt-sm-2">
+                            <div class="checkgroup">
+                                <input type="checkbox" name="remember" id="remember">
+                                <label for="remember">Remember Me</label>
+                            </div>
+                            <a href="#">Forget Password?</a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type ="submit" class="d-block default-button"><span>Submit Now</span></button>
+                    </div>
+                </form>
+                <div class="account-bottom">
+                    <span class="d-block cate pt-10">Don’t Have any Account? <a href="registration.html"> Sign Up</a></span>
+                    <span class="or"><span>or</span></span>
+                    <h5 class="subtitle">Login With Social Media</h5>
+                    <ul class="match-social-list d-flex flex-wrap align-items-center justify-content-center mt-4">
+                        <li><a href="#"><img src="assets/images/match/social-1.png" alt="vimeo"></a></li>
+                        <li><a href="#"><img src="assets/images/match/social-2.png" alt="youtube"></a></li>
+                        <li><a href="#"><img src="assets/images/match/social-3.png" alt="twitch"></a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <div class="form-footer mt-2">
-            <button type="submit" class="btn btn-primary btn-block">Connexion</button>
-        </div>
-    </form>
-</div>
+    </div>
+
+
+
+
+    <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+    <script>
+        window.ga = function () {
+            ga.q.push(arguments)
+        };
+        ga.q = [];
+        ga.l = +new Date;
+        ga('create', 'UA-XXXXX-Y', 'auto');
+        ga('set', 'anonymizeIp', true);
+        ga('set', 'transport', 'beacon');
+        ga('send', 'pageview')
+    </script>
+    <script src="https://www.google-analytics.com/analytics.js" async></script>
+
+
+
+    </body>
+
 {% endblock %}

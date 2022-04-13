@@ -29,7 +29,6 @@ class DashboardController extends AbstractController
 
         $rep = $this->getDoctrine()->getRepository(User::class);
         $users=$rep->findAll();
-
         return $this->render('dashboard/afficheuser.html.twig',['users'=>$users]);
 
     }
@@ -87,6 +86,11 @@ class DashboardController extends AbstractController
         // uniqid(), which is based on timestamps
         return md5(uniqid());
     }
+
+
+
+
+
 
 
 
