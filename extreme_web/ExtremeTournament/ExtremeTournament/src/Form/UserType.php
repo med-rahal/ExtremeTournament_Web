@@ -19,7 +19,14 @@ class UserType extends AbstractType
             ->add('prenom')
             ->add('username')
             ->add('date_naissance',BirthdayType::class)
-            ->add('sexe')
+            ->add('sexe',ChoiceType::class,array(
+                      'choices'  => array(
+                        'Male'   => 'Male',
+                        'Female' => 'Female',
+                        'Others'  => 'Others',
+                    ),
+                )
+            )
             ->add('type',ChoiceType::class,array(
                     'choices'  => array(
                     'administrateur'   => 'administrateur',
@@ -33,7 +40,6 @@ class UserType extends AbstractType
             ->add('tel')
             ->add('adresse')
             ->add('image',FileType::class, [
-                'label' => 'Please upload your image' ,
                 'mapped' => false,
 
 

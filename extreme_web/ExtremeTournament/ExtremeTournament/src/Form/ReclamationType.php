@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Reclamation;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,7 +14,14 @@ class ReclamationType extends AbstractType
     {
         $builder
             ->add('descriptionR')
-            ->add('type')
+            ->add('type',ChoiceType::class,array(
+                    'choices'  => array(
+                    'Contenu inapproprié'   => 'Mauvais Service',
+                    'Fonctionnalité du site ' => 'Fonctionnalite du site',
+                    'Retards et Changements'  => 'Retards et Changements',
+                    )
+                )
+            )
             ->add('email')
 
         ;

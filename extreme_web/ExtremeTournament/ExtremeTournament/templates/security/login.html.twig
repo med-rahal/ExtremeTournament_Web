@@ -50,7 +50,7 @@
                 <h3 class="title">Login</h3>
                 <form action="{{ path('login_security') }}" method="post">
                     <div class="form-group">
-                        <label class="form-label" for="exampleInputname">Adresse email</label>
+                        <label class="form-label" for="exampleInputname">Username</label>
                         <input  placeholder="Username..." name="_username"
                                 type="text" class="form-control">
                     </div>
@@ -75,15 +75,10 @@
                         <button type ="submit" class="d-block default-button"><span>Submit Now</span></button>
                     </div>
                 </form>
+                <br>
+                <br>
                 <div class="account-bottom">
-                    <span class="d-block cate pt-10">Don’t Have any Account? <a href="registration.html"> Sign Up</a></span>
-                    <span class="or"><span>or</span></span>
-                    <h5 class="subtitle">Login With Social Media</h5>
-                    <ul class="match-social-list d-flex flex-wrap align-items-center justify-content-center mt-4">
-                        <li><a href="#"><img src="assets/images/match/social-1.png" alt="vimeo"></a></li>
-                        <li><a href="#"><img src="assets/images/match/social-2.png" alt="youtube"></a></li>
-                        <li><a href="#"><img src="assets/images/match/social-3.png" alt="twitch"></a></li>
-                    </ul>
+                    <span class="d-block cate pt-10">Don’t Have any Account? <a href="{{ path('login_signup') }}"> Sign Up</a></span>
                 </div>
             </div>
         </div>

@@ -15,6 +15,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 
 
+
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
@@ -31,16 +32,35 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="This field cannot contain a number"
+     * )
+     * @Assert\NotNull(message="This value can not be null")
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="This field cannot contain a number"
+     * )
+     * @Assert\NotNull(message="This value can not be null")
+     *
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="This field cannot contain a number"
+     * )
+     * @Assert\NotNull(message="This value can not be null")
      */
     private $username;
 
@@ -61,6 +81,10 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email."
+     * )
+     * @Assert\NotNull(message="This value can not be null")
      */
     private $email;
 
@@ -77,16 +101,24 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\Regex(
+     *     pattern     = "/^[0-9]+$/i",
+     *     htmlPattern = "^[0-9]+$"
+     * )
+     * @Assert\NotNull(message="This value can not be null")
      */
     private $tel;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotNull(message="This value can not be null")
+     *
      */
     private $adresse;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      */
     private $image;
 
