@@ -7,22 +7,26 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * @ORM\Entity(repositoryClass=PouleRepository::class)
+ * @UniqueEntity("nom_poule")
+
  */
 class Poule
 {
 
     /**
      * @ORM\Id
-     * @Assert\NotBlank(message=" Name Can't be Empty")
-     * @Assert\Length(
-     *      min = 5,
-     *      minMessage=" Enter Valid Name (min 5 caracteres) "
-     *
-     *     )
-     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message=" Poule Name Can't be Empty")
+
+     * @Assert\Regex(
+     *     pattern     = "/^(Poule)+[ ]+[a-z]$/i",
+     *     htmlPattern = "(Poule)+[ ]+[a-z]",
+     *     message = "Name should be like for exemple : Poule A")
+     * @ORM\Column(type="string", length=255  , unique=true )
      */
     public $nom_poule ;
 

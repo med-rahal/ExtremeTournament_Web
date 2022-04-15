@@ -7,10 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 
 /**
  * @ORM\Entity(repositoryClass=TournoiRepository::class)
+ * @UniqueEntity("nomT")
  */
 class Tournoi
 {
@@ -22,22 +25,24 @@ class Tournoi
     public  $id_t;
 
     /**
-     * @Assert\NotBlank(message=" Name of Tournament Can't be Empty")
-     * @Assert\Length(
-     *      min = 5,
-     *      minMessage=" Enter a Valid Name (min 5 caracteres) "
      *
-     *     )
+     *
+     * @Assert\NotBlank(message="Name is required")
      * @ORM\Column(type="string", length=255 , unique=true)
+     * @Assert\Regex(
+     *     pattern     = "/^[a-z]+$/i",
+     *     htmlPattern = "[a-zA-Z]+",
+     *      message = "Name should Contains only letters ")
+     * )
      */
     private $nomT;
     /**
-     * @Assert\NotBlank(message=" Name of Emplacment Can't be Empty")
-     * @Assert\Length(
-     *      min = 3,
-     *      minMessage=" Enter a Valid Name (min 3 caracteres) "
-     *
-     *     )
+     * @Assert\NotBlank(message=" Name of Location is required")
+     *  @Assert\Regex(
+     *     pattern     = "/^[a-z]+$/i",
+     *     htmlPattern = "[a-zA-Z]+",
+     *      message = "Location  should Contains only letters ")
+     * )
      * @ORM\Column(type="string", length=255)
      */
     private $emplacementT;

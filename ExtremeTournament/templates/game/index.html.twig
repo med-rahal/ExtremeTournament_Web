@@ -4,6 +4,7 @@
 {% block body %}
 <body>
 <!-- preloader start here -->
+
 <div class="preloader">
     <div class="preloader-inner">
         <div class="preloader-icon">
@@ -88,7 +89,7 @@
 
 
                                             <p class="d-flex flex-wrap justify-content-center  justify-content-md-start">
-													<span class="match-date">{{ Tournoi.dateT |date('d-m-Y')}}</span> |<span class="match-time">{{ Tournoi.emplacementT}}</span>
+													<span class="match-date">{{ Tournoi.dateT |date('d-m-Y')}}</span> <span class="match-time">{{ Tournoi.emplacementT}}</span>
                                             </p>
                                         </div>
                                     </div>
@@ -96,9 +97,7 @@
                                         <div class="match-game-social">
                                             <ul class="match-social-list d-flex flex-wrap align-items-center justify-content-center justify-content-xl-start">
 
-                                                <li><a href="{{ path('ModifyGameFrontt',{'nomT':Tournoi.nomT}) }}" class="default-button reverse-effect"><span>Modifier
-																</span> </a></li>
-                                                <li><a href="{{ path('RemoveGameFrontt',{'nomT':Tournoi.nomT}) }}" class="default-button reverse-effect"><span>Delete
+                                                <li><a href="{{ path('RemoveGameFrontt',{'nomT':Tournoi.nomT}) }}" class="default-button reverse-effect "><span>Delete
 																</span> </a></li>
                                             </ul>
                                         </div>

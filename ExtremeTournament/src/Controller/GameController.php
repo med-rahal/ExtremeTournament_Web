@@ -175,7 +175,7 @@ class GameController extends AbstractController
             $em->flush();
             return $this->redirectToRoute('app_gameFJoin');
         }
-        return $this->render('game/ModifyGameF.html.twig',['f'=>$form->createView()]);
+        return $this->render('game/ModifyGameFm.html.twig',['f'=>$form->createView()]);
     }
     /**
      * @Route("/ModifyGameFF/{nomT}", name="ModifyGameFrontt")
