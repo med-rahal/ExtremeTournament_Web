@@ -22,6 +22,9 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 class User implements UserInterface, \Serializable
 {
+
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -75,9 +78,10 @@ class User implements UserInterface, \Serializable
     private $sexe;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="json")
+     *
      */
-    private $type;
+    private $roles = [];
 
     /**
      * @ORM\Column(type="string", length=50)
@@ -221,32 +225,20 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getType(): ? string
-    {
-        return $this->type;
 
+    public function getRoles(): array
+    {
+        return $this->roles;
     }
 
-    public function setType(string $type): self
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-
-    public function getRoles()
-    {
-        return ['ROLE_USER'];
-
-    }
-
-    public function setRoles(string $roles): self
+    /**
+     * @param array $roles
+     */
+    public function setRoles(array $roles): void
     {
         $this->roles = $roles;
-
-        return $this;
     }
+
 
     public function getEmail(): ?string
     {
@@ -484,7 +476,7 @@ class User implements UserInterface, \Serializable
     public function serialize()
     {
         return serialize([
-           $this->id_user,
+            $this->id_user,
             $this->username,
             $this->email,
             $this->passw
@@ -500,6 +492,11 @@ class User implements UserInterface, \Serializable
             $this->email,
             $this->passw
             ) = unserialize($data,['allowed_classes'=> false]);
+    }
+
+    public function isAdmin():bool
+    {
+        return in_array(self::ROLE_ADMIN,$this->getRoles());
     }
 }
 

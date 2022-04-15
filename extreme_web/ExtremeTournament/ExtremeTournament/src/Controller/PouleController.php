@@ -13,7 +13,7 @@ class PouleController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('poule/login.html.twig', [
+        return $this->render('poule/index.html.twig', [
             'controller_name' => 'PouleController',
         ]);
 

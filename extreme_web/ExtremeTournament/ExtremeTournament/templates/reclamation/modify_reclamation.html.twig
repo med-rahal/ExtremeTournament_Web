@@ -1,0 +1,91 @@
+{% extends 'baseback.html.twig'%}
+
+{% block body %}
+
+    <head>
+        <style>
+            table {
+                border-collapse: separate;
+                border-spacing: 0 15px;
+            }
+
+            th {
+                background-color: #0a0a0a;
+            }
+
+            td {
+
+                padding: 4px;
+            }
+
+            .may {
+                background: rgba(255, 255, 255, 0.46);
+                border-radius: 16px;
+                box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+                backdrop-filter: blur(8.2px);
+                -webkit-backdrop-filter: blur(8.2px);
+                border: 1px solid rgba(255, 255, 255, 0.3);
+            }
+
+            body {
+
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-size: 100% 100%;
+            }
+
+        </style>
+    </head>
+
+
+
+    <br><br><br><br><br><br><br><br>
+
+    <center>
+        {{ form_start(formrec,{'attr':{'class':'form-horizontal','novalidate':'novalidate'}}) }}
+
+        <table class="col-4 may">
+            <tr><td colspan="3" style="text-align: center"><h4 class="mb-4" style="color:#350A4E" align="center"><i class="fa fa-user" style="color: #DC904B"></i> Modify User<i class="fa fa-user" style="color: #DC904B"></i></h4>
+                </td></tr>
+
+            <tr>
+
+                <td>{{ form_label(formrec.descriptionR,"description") }}</td>
+                <td>{{ form_widget(formrec.descriptionR) }}</td>
+                <td> {{ form_errors(formrec.descriptionR) }}</td>
+            </tr>
+            <tr>
+                <td>{{ form_label(formrec.type,"Type") }}</td>
+                <td>{{ form_widget(formrec.type) }}</td>
+                <td> {{ form_errors(formrec.type) }}</td>
+            </tr>
+            <tr>
+                <td>{{ form_label(formrec.etatR,"Etat") }}</td>
+                <td>{{ form_widget(formrec.etatR) }}</td>
+                <td> {{ form_errors(formrec.etatR) }}</td>
+            </tr>
+            <tr>
+                <td>{{ form_label(formrec.email,"Email") }}</td>
+                <td>{{ form_widget(formrec.email) }}</td>
+                <td>{{ form_errors(formrec.email) }} </td>
+            </tr>
+            <tr>
+                <td>{{ form_label(formrec.dateR,"Date de Reclamation") }}</td>
+                <td>{{ form_widget(formrec.dateR) }}</td>
+                <td> {{ form_errors(formrec.dateR) }} </td>
+            </tr>
+
+        </table>
+        <br>
+        {{ form_end(formrec) }}
+        <br>
+        <br><br><br><br><br><br><br><br><br><br>
+
+    </center>
+
+
+
+{% endblock %}
+
+
+

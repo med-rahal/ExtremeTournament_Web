@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20220413121025 extends AbstractMigration
+final class Version20220414215401 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -31,7 +31,7 @@ final class Version20220413121025 extends AbstractMigration
         $this->addSql('CREATE TABLE publication (id_publication INT AUTO_INCREMENT NOT NULL, id_user INT NOT NULL, titre VARCHAR(50) NOT NULL, status VARCHAR(150) NOT NULL, date_creation DATE NOT NULL, image VARCHAR(100) NOT NULL, INDEX IDX_AF3C67796B3CA4B (id_user), PRIMARY KEY(id_publication)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE reclamation (id_reclam INT AUTO_INCREMENT NOT NULL, id_user INT NOT NULL, description_r VARCHAR(150) NOT NULL, type VARCHAR(50) NOT NULL, etat_r VARCHAR(50) NOT NULL, email VARCHAR(50) NOT NULL, date_r DATETIME NOT NULL, INDEX IDX_CE6064046B3CA4B (id_user), PRIMARY KEY(id_reclam)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE tournoi (id_t INT AUTO_INCREMENT NOT NULL, nom_t VARCHAR(50) NOT NULL, emplacement_t VARCHAR(50) NOT NULL, date_t DATE NOT NULL, id_user INT NOT NULL, PRIMARY KEY(id_t)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE user (id_user INT AUTO_INCREMENT NOT NULL, nom VARCHAR(50) NOT NULL, prenom VARCHAR(50) NOT NULL, username VARCHAR(50) NOT NULL, date_naissance DATE NOT NULL, sexe VARCHAR(30) NOT NULL, type VARCHAR(30) NOT NULL, email VARCHAR(50) NOT NULL, passw VARCHAR(255) NOT NULL, tel VARCHAR(30) NOT NULL, adresse VARCHAR(50) NOT NULL, image VARCHAR(255) NOT NULL, PRIMARY KEY(id_user)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE user (id_user INT AUTO_INCREMENT NOT NULL, nom VARCHAR(50) NOT NULL, prenom VARCHAR(50) NOT NULL, username VARCHAR(50) NOT NULL, date_naissance DATE NOT NULL, sexe VARCHAR(30) NOT NULL, roles LONGTEXT NOT NULL COMMENT \'(DC2Type:json)\', email VARCHAR(50) NOT NULL, passw VARCHAR(255) NOT NULL, tel VARCHAR(30) NOT NULL, adresse VARCHAR(50) NOT NULL, image VARCHAR(255) NOT NULL, PRIMARY KEY(id_user)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE commentaire ADD CONSTRAINT FK_67F068BCB72EAA8E FOREIGN KEY (id_publication) REFERENCES publication (id_publication)');
         $this->addSql('ALTER TABLE commentaire ADD CONSTRAINT FK_67F068BC6B3CA4B FOREIGN KEY (id_user) REFERENCES user (id_user)');
         $this->addSql('ALTER TABLE equipe ADD CONSTRAINT FK_2449BA1594DE8435 FOREIGN KEY (id_match) REFERENCES matchs (id_match)');

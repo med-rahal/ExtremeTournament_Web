@@ -4,7 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Reclamation;
 use App\Form\ReclamationType;
+use App\Form\UpdateRecType;
+use App\Repository\ReclamationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,6 +59,46 @@ class ReclamationController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
         return $this->render('reclamation/addreclamation.html.twig',['formR'=>$form->createView()]);
+
+    }
+
+    /**
+     * @param ReclamationRepository $repository
+     * @param $id
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @Route("/admin/reclamation/update/{id}",name="updatereclamation")
+     */
+
+    public function update(ReclamationRepository $repository,$id,Request $request){
+        $reclamation=$repository->find($id);
+        $form = $this->createForm(UpdateRecType::class,$reclamation);
+        $form->add('update',SubmitType::class);
+       $form->handleRequest($request);
+
+        if($form->isSubmitted() &&$form->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            return $this->redirectToRoute('app_reclamationback');
+        }
+        return $this->render('reclamation/modify_reclamation.html.twig',['formrec'=>$form->createView()]);
+
+    }
+
+
+    /**
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("/admin/reclamation/delete/{id}",name="deletereclamation")
+     */
+
+    public function delete($id){
+        $user =$this->getDoctrine()->getRepository(Reclamation::class)->find($id);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($user);
+        $em->flush();
+        return $this->redirectToRoute('app_reclamationback');
+
 
     }
 

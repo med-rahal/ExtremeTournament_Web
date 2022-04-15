@@ -13,7 +13,7 @@ class PlateformeController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('plateforme/login.html.twig', [
+        return $this->render('plateforme/index.html.twig', [
             'controller_name' => 'PlateformeController',
         ]);
     }

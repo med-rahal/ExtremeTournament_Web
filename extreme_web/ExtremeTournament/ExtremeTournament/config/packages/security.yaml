@@ -23,16 +23,19 @@ security:
             form_login:
                 login_path: login_security
                 check_path: login_security
-                default_target_path: app_home
 
             logout:
                     path: security_logout
-                    target: app_home
+                    target: login_security
 
-                # where to redirect after logout
-                # target: app_any_route
-
-          
+            remember_me:
+                name: SECURITY_DEMO
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                always_remember_me: true
+            guard:
+                authenticators:
+                    - App\Security\LoginAuthenticator
 
 
 
@@ -45,8 +48,8 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the first access control that matches will be used
     access_control:
-       # - { path: ^/admin, roles: ROLE_ADMIN }
-       # - { path: ^/profile, roles: ROLE_USER }
-       # - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/home, roles: ROLE_USER }
+      # - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 
 

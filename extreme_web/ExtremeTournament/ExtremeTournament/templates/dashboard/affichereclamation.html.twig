@@ -55,7 +55,7 @@
             <!-- END Mini Top Stats Row -->
             <div class="row justify-content-center">
                 <div class="col-md-6 text-center mb-5">
-                    <h2 class="heading-section">Liste des utilisateurs</h2>
+                    <h2 class="heading-section">Liste des Reclamations</h2>
                 </div>
             </div>
 
@@ -68,11 +68,13 @@
                                 <table class="table table-striped table-bordered" >
                                     <thead class="thead-dark">
                                     <tr>
+                                        <th>IDReclamation</th>
                                         <th>Description</th>
                                         <th>Type</th>
                                         <th>Etat</th>
                                         <th>Email</th>
                                         <th>Username</th>
+                                        <th>Actions</th>
 
 
                                     </tr>
@@ -81,14 +83,15 @@
                                     <tr class="alert" role="alert">
 
                                         {% for r in reclamations %}
+                                        <td>{{ r.IdReclam }}</td>
                                         <td>{{ r.descriptionR }}</td>
                                         <td>{{ r.type }}</td>
                                         <td>{{ r.etatR }}</td>
                                         <td>{{ r.email }}</td>
-
+                                        <td>{{ r.IdUser.username }}</td>
                                         <td>
-
-
+                                            <button class="bg-light" > <a class="fa fa-trash" href="{{ path('updatereclamation',{'id':r.IdReclam})  }}">Modify</a></button>
+                                            <button class="bg-light" > <a class="fa fa-trash" href="{{ path('deletereclamation',{'id':r.IdReclam})  }}">Delete</a></button>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -98,6 +101,7 @@
                         </div>
                     </div>
                 </div>
+
             </section>
 
             {% block userinfos %}
@@ -168,6 +172,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- END User Settings -->
             {% endblock %}
     </body>

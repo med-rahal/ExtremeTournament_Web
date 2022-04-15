@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ReclamationRepository;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=ReclamationRepository::class)
  */
@@ -18,6 +18,12 @@ class Reclamation
     private $id_reclam;
     /**
      * @ORM\Column(type="string", length=150)
+     * @Assert\Regex(
+     *     pattern="/\d/",
+     *     match=false,
+     *     message="This field cannot contain a number"
+     * )
+     * @Assert\NotNull(message="This value can not be null")
      */
     private $descriptionR;
 
@@ -33,6 +39,10 @@ class Reclamation
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\Email(
+     *    message = "The email '{{ value }}' is not a valid email."
+     * )
+     * @Assert\NotNull(message="This value can not be null")
      */
     private $email;
 
@@ -125,12 +135,12 @@ class Reclamation
         return $this;
     }
 
-    public function getIdUser(): ? int
+    public function getIdUser(): ? User
     {
         return $this->id_user;
     }
 
-    public function setIdUser($id_user): self
+    public function setIdUser($id_user): User
     {
         $this->id_user = $id_user;
 

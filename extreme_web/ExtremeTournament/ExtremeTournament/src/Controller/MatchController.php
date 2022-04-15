@@ -13,7 +13,7 @@ class MatchController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('match/login.html.twig', [
+        return $this->render('match/index.html.twig', [
             'controller_name' => 'MatchController',
         ]);
     }

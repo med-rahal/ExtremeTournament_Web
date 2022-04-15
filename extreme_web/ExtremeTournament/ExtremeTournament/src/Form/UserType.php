@@ -6,10 +6,10 @@ use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
+
 class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -19,31 +19,25 @@ class UserType extends AbstractType
             ->add('prenom')
             ->add('username')
             ->add('date_naissance',BirthdayType::class)
-            ->add('sexe',ChoiceType::class,array(
-                      'choices'  => array(
-                        'Male'   => 'Male',
-                        'Female' => 'Female',
-                        'Others'  => 'Others',
-                    ),
-                )
-            )
-            ->add('type',ChoiceType::class,array(
-                    'choices'  => array(
-                    'administrateur'   => 'administrateur',
-                    'participant' => 'participant',
-                    'proprietaire'  => 'proprietaire',
-                ),
-
-            ))
+            ->add('sexe')
+            ->add('roles',ChoiceType::class,[
+                'choices' => [
+                    'Participant' => 'ROLE_USER',
+                    'Proprietaire' => 'ROLE_PROPRIETAIRE',
+                    'Administrateur' => 'ROLE_ADMIN'
+                ],
+                'multiple' => true,
+                'label' => 'Rôles'
+            ])
             ->add('email')
             ->add('passw')
             ->add('tel')
             ->add('adresse')
-            ->add('image',FileType::class, [
-                'mapped' => false,
+           ->add('image',FileType::class, [
+               'mapped' => false,
 
 
-            ])
+           ])
         ;
     }
 

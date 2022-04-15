@@ -93,13 +93,15 @@
                                 <img src="{{ asset('assets/img/placeholders/avatars/avatar2.jpg') }}" alt="avatar">
                             </a>
                         </div>
-                        <div class="sidebar-user-name">John Doe</div>
+                        <div class="sidebar-user-name"><br>
+                         Welcome {{ app.user.nom }} {{ app.user.prenom }}
+                        </div>
                         <div class="sidebar-user-links">
                             <a href="page_ready_user_profile.html" data-toggle="tooltip" data-placement="bottom" title="Profile"><i class="gi gi-user"></i></a>
                             <a href="page_ready_inbox.html" data-toggle="tooltip" data-placement="bottom" title="Messages"><i class="gi gi-envelope"></i></a>
                             <!-- Opens the user settings modal that can be found at the bottom of each page (page_footer.html in PHP version) -->
                             <a href="javascript:void(0)" class="enable-tooltip" data-placement="bottom" title="Settings" onclick="$('#modal-user-settings').modal('show');"><i class="gi gi-cogwheel"></i></a>
-                            <a href="login.html" data-toggle="tooltip" data-placement="bottom" title="Logout"><i class="gi gi-exit"></i></a>
+                            <a href="{{ path('security_logout') }}" data-toggle="tooltip" data-placement="bottom" title="Logout"><i class="gi gi-exit"></i></a>
                         </div>
                     </div>
                     <!-- END User Info -->
@@ -216,7 +218,7 @@
                         </li>
 
                         </li>
-
+                    </ul>
 
                         <!-- END Sidebar Notifications -->
                 </div>
@@ -375,10 +377,10 @@
             <!-- Footer -->
             <footer class="clearfix">
                 <div class="pull-right">
-                    Crafted with <i class="fa fa-heart text-danger"></i> by <a href="https://1.envato.market/ydb" target="_blank">pixelcave</a>
+                    Crafted with <i class="fa fa-heart text-danger"></i> by <a href="https://1.envato.market/ydb" target="_blank">RuntimeTerror</a>
                 </div>
                 <div class="pull-left">
-                    <span id="year-copy"></span> &copy; <a href="https://1.envato.market/x4R" target="_blank">ProUI 3.8</a>
+                    <span>2022 </span> <a href="https://www.facebook.com/Extreme-Tournament-112193534708077" target="_blank">ExtremeTournament</a>
                 </div>
             </footer>
         </div>

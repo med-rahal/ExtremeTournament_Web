@@ -82,6 +82,12 @@
                         {{ form_widget(formA.sexe , {'attr': {'class': '' , 'placeholder' : 'Sexe'}} ) }}
                         {{ form_errors(formA.sexe)}}
                     </div>
+
+                    <div class="form-group">
+                        {{ form_label(formA.roles,'Roles') }}
+                        {{ form_widget(formA.roles , {'attr': {'class': '' , 'placeholder' : 'Roles'}} ) }}
+                        {{ form_errors(formA.roles)}}
+                    </div>
                     <div class="form-group">
                         {{ form_label(formA.email,'Email') }}
                         {{ form_widget(formA.email , {'attr': {'class': '' , 'placeholder' : 'Email'}} ) }}
