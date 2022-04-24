@@ -42,7 +42,7 @@ class Reclamation
      * @Assert\Email(
      *    message = "The email '{{ value }}' is not a valid email."
      * )
-     * @Assert\NotNull(message="This value can not be null")
+     *
      */
     private $email;
 
@@ -140,7 +140,7 @@ class Reclamation
         return $this->id_user;
     }
 
-    public function setIdUser($id_user): User
+    public function setIdUser(User $id_user)
     {
         $this->id_user = $id_user;
 

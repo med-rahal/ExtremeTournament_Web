@@ -1,0 +1,26 @@
+table {
+    border-collapse: separate;
+    border-spacing: 0 15px;
+}
+
+th {
+    background-color: #ccc;
+}
+
+td {
+
+    padding: 4px;
+}
+
+.may {
+    background-image: url("/images/bg.jpg");
+    background-position: center;
+    background-size:  cover ;
+}
+
+body {
+    background-image: url("/images/bg.jpg");
+    background-position: center;
+    background-size:  cover ;
+
+}

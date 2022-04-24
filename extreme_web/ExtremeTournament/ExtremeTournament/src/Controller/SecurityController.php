@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +13,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 
 class SecurityController extends AbstractController
@@ -20,26 +21,26 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login", name="login_security")
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils,Request $request)
     {
 
         $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
         return $this->render('security/login.html.twig',
-            ['lastUsername'=>$lastUsername,'error' => $error]);
-    }
+            ['lastUsername'=>$lastUsername,'error'=>$error]);
+        }
 
     /**
      * @param Request $request
      * @return Response
      * @Route("/Signup",name="login_signup")
      */
-    public function addUser(Request $request,UserPasswordEncoderInterface $encoder): Response
+    public function addUser(Request $request,UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer,ValidatorInterface $validator): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class,$user);
         $form->handleRequest($request);
+        $errors = $validator->validate($user);
         if($form->isSubmitted() &&$form->isValid()){
             $hash = $encoder->encodePassword($user,$user->getPassw());
             $user->setPassw($hash);
@@ -50,11 +51,26 @@ class SecurityController extends AbstractController
                 $this->getParameter('brochures_directory'),
                 $fileName);
             $user->setImage($fileName);
+            $name=$form->get('username')->getData();
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
+            $message = (new \Swift_Message('Welcome To ExtremeTournament!'))
+                ->setFrom('xtreametournamnet@gmail.com')
+                ->setTo($form->get('email')->getData());
+            $img = $message->embed(\Swift_Image::fromPath('images/logo.png'));
+            $message->setBody(
+                $this->renderView(
+                    'security/emailregistration.html.twig',
+                    ['name' => $name ,'img'=> $img]
+                ),
+                'text/html'
+            )
+                ->attach(\Swift_Attachment::fromPath('C:\Users\MR\Desktop\terms.docx'));
+             $mailer->send($message);
             return $this->redirectToRoute('login_security');
         }
+
         return $this->render('security/signup.html.twig',['formA'=>$form->createView()]);
 
     }

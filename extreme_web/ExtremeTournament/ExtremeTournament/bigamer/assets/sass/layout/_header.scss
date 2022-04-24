@@ -367,6 +367,7 @@
     @include breakpoint(lg) {
         margin-right: 30px;
         margin-bottom: 0;
+        text-align: center;
     }
 
     >li {
@@ -376,6 +377,7 @@
             font-weight: 700;
             padding: 15px 22px;
             text-transform: uppercase;
+            text-align: center;
 
             i {
                 margin-right: 5px;
@@ -419,6 +421,7 @@
                         color: $black-color;
                         font-weight: 500;
                         border-bottom: 1px solid $border-color;
+                        text-align: center;
 
                         &:hover,
                         &.active {
@@ -818,6 +821,7 @@
                         color: $white-color;
                         margin: 0 5px;
                         text-transform: capitalize;
+
 
                         &.active {
                             @extend %text-regular;

@@ -1,16 +1,15 @@
-{% extends 'baseback.html.twig'%}
-
-{% block body %}
+{% extends 'baseback.html.twig' %}
+{%  block body  %}
 
     <head>
-        <style>
+        <style class>
             table {
                 border-collapse: separate;
                 border-spacing: 0 15px;
             }
 
             th {
-                background-color: #0a0a0a;
+                background-color: #ccc;
             }
 
             td {
@@ -28,28 +27,25 @@
             }
 
             body {
+                background-image: url("/images/bg.jpg");
+                background-position: center;
+                background-size:  cover ;
 
-                background-repeat: no-repeat;
-                background-attachment: fixed;
-                background-size: 100% 100%;
             }
 
         </style>
     </head>
 
-
-
-    <br><br><br><br><br><br><br><br>
-
+    <body>
+    <div id="page-content" >
+    <br>
     <center>
         {{ form_start(form,{'attr':{'class':'form-horizontal','novalidate':'novalidate'}}) }}
-
-        <table class="col-4 may">
-            <tr><td colspan="3" style="text-align: center"><h4 class="mb-4" style="color:#350A4E" align="center"><i class="fa fa-user" style="color: #DC904B"></i> Modify User<i class="fa fa-user" style="color: #DC904B"></i></h4>
+        <table class="col-4 may" >
+            <tr><td colspan="3" style="text-align: center"><h4 class="mb-4" style="color:#2c47a3" align="center"><i class="fa fa-user" style="color: #DC904B"></i> Modify User<i class="fa fa-user" style="color: #DC904B"></i></h4>
                 </td></tr>
 
             <tr>
-
                 <td>{{ form_label(form.nom,"Nom") }}</td>
                 <td>{{ form_widget(form.nom) }}</td>
                 <td> {{ form_errors(form.nom) }}</td>
@@ -87,11 +83,6 @@
                 <td> {{ form_errors(form.email) }} </td>
             </tr>
 
-            <tr>
-                <td>{{ form_label(form.passw,"Password") }}</td>
-                <td>{{ form_widget(form.passw) }}</td>
-                <td> {{ form_errors(form.passw) }} </td>
-            </tr>
 
             <tr>
                 <td>{{ form_label(form.tel,"Telephone") }}</td>
@@ -106,17 +97,19 @@
             </tr>
 
             <tr>
-                <td>{{ form_label(form.image,"Image") }}</td>
-                <td>{{ form_widget(form.image) }}</td>
-                <td> {{ form_errors(form.image) }} </td>
+                <td>{{form_label(form.image,"Image") }}</td>
+                <td><img src="{{ asset('uploads/'~image) }}" style="width:80px" style="height: 80px" class="img-rounded"/></td>
             </tr>
+
         </table>
         <br>
         {{ form_end(form) }}
         <br>
 
-
     </center>
+        </div>
+    </body>
+    </html>
 
 
 

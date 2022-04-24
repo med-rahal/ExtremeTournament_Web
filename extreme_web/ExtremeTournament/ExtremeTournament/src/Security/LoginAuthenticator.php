@@ -91,17 +91,23 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator implements Passw
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
+
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }
+
 
         if($token->getUser()->isAdmin()){
             return new RedirectResponse($this->urlGenerator->generate('app_admin'));
         }
 
+        if($token->getUser()->isUser()){
+            return new RedirectResponse($this->urlGenerator->generate('app_home'));
+        }
 
 
-      return new RedirectResponse($this->urlGenerator->generate('app_blog'));
+
+     // return new RedirectResponse($this->urlGenerator->generate('app_blog'));
 
     }
 

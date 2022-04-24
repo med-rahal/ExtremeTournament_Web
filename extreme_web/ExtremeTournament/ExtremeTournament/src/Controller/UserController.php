@@ -3,10 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\ModifierUserType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,10 +30,10 @@ class UserController extends AbstractController
     public function update(UserRepository $repository, Request $request)
     {
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(ModifierUserType::class, $user);
         $form->handleRequest($request);
+        $file = $form->get('image')->getData();
         if ($form->isSubmitted() && $form->isValid()) {
-            $file = $form->get('image')->getData();
             $fileName = $this->generateUniqueFileName() . '.' . $file->guessExtension();
             // moves the file to the directory where brochures are stored
             $file->move(
@@ -37,12 +41,13 @@ class UserController extends AbstractController
                 $fileName
             );
 
+           // $user->setImage(new File($this->getParameter('brochures_directory').'/'.$user->getImage()));
             $user->setImage($fileName);
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             return $this->redirectToRoute('app_home');
         }
-        return $this->render('user/modify_user.html.twig', ['formA' => $form->createView()]);
+        return $this->render('user/modify_user.html.twig', ['formA' => $form->createView(),'img'=>$file]);
 
 
     }
@@ -73,6 +78,56 @@ class UserController extends AbstractController
 
 
     }
+
+
+
+
+    /**
+     * @Route("/listU", name="listU", methods={"GET"})
+     */
+    public function listU(UserRepository $rep) :Response
+    {
+
+
+        // Configure Dompdf according to your needs
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+        $reader=$rep->findAll();
+
+
+        // Retrieve the HTML generated in our twig file
+
+        $html = $this->renderView('dashboard/listU.html.twig', array(
+            'users'=>$reader
+        ));
+
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A3', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser (force download)
+        $dompdf->stream("UsersList.pdf", [
+            "Attachment" => true
+        ]);
+
+        // Send some text response
+        return new Response("The PDF file has been succesfully generated !");
+
+    }
+
+
+
+
+
+
 
 
 

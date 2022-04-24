@@ -13,6 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 
+
+
 class ReclamationController extends AbstractController
 {
     /**
@@ -43,9 +45,10 @@ class ReclamationController extends AbstractController
      * @Route("/addreclamation",name="add_reclamation")
      */
 
-    public function addReclamation(Request $request): Response
+    public function addReclamation(Request $request , \Swift_Mailer $mailer): Response
     {
         $user = $this->get('security.token_storage')->getToken()->getUser();
+        $name=$user->getUsername();
         $reclamation = new Reclamation();
         $form = $this->createForm(ReclamationType::class,$reclamation);
         $form->handleRequest($request);
@@ -54,8 +57,24 @@ class ReclamationController extends AbstractController
             $reclamation->setDateR(new \DateTime());
             $reclamation->setEtatR('nontraitée');
             $reclamation->setIdUser($user);
-            $em->persist($reclamation);
-            $em->flush();
+            $reclamation->setEmail($user->getEmail());
+            $type = $form->get('type')->getData();
+            $date = $reclamation->getDateR();
+             $em->persist($reclamation);
+             $em->flush();
+            $message = (new \Swift_Message('Welcome To ExtremeTournament!'))
+                    ->setFrom('xtreametournamnet@gmail.com')
+                    ->setTo($user->getEmail());
+            $img = $message->embed(\Swift_Image::fromPath('images/logo.png'));
+            $message->setBody(
+                    $this->renderView(
+                        'reclamation/reclamationconfirmation.html.twig',
+                        ['name' => $name ,'type'=>$type,'date'=>$date,'img'=> $img]
+                    ),
+                    'text/html'
+            );
+            $mailer->send($message);
+
             return $this->redirectToRoute('app_home');
         }
         return $this->render('reclamation/addreclamation.html.twig',['formR'=>$form->createView()]);
@@ -100,6 +119,17 @@ class ReclamationController extends AbstractController
         return $this->redirectToRoute('app_reclamationback');
 
 
+    }
+
+
+    /**
+     * @return Response
+     * @Route("/sortedrec",name="sortrec")
+     */
+
+    public function sort(){
+        $rec = $this->getDoctrine()->getRepository(Reclamation::class)->sortReclamations();
+        return $this->render('dashboard/affichereclamation.html.twig',['reclamations'=>$rec]);
     }
 
 

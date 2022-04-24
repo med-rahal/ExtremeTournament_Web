@@ -24,6 +24,7 @@ class User implements UserInterface, \Serializable
 {
 
     const ROLE_ADMIN = 'ROLE_ADMIN';
+    const ROLE_USER = 'ROLE_USER';
 
     /**
      * @ORM\Id
@@ -41,6 +42,7 @@ class User implements UserInterface, \Serializable
      *     message="This field cannot contain a number"
      * )
      * @Assert\NotNull(message="This value can not be null")
+     * @Assert\NotBlank
      */
     private $nom;
 
@@ -52,7 +54,7 @@ class User implements UserInterface, \Serializable
      *     message="This field cannot contain a number"
      * )
      * @Assert\NotNull(message="This value can not be null")
-     *
+     * @Assert\NotBlank
      */
     private $prenom;
 
@@ -64,6 +66,7 @@ class User implements UserInterface, \Serializable
      *     message="This field cannot contain a number"
      * )
      * @Assert\NotNull(message="This value can not be null")
+     * @Assert\NotBlank
      */
     private $username;
 
@@ -89,6 +92,7 @@ class User implements UserInterface, \Serializable
      *     message = "The email '{{ value }}' is not a valid email."
      * )
      * @Assert\NotNull(message="This value can not be null")
+     * @Assert\NotBlank
      */
     private $email;
 
@@ -98,10 +102,9 @@ class User implements UserInterface, \Serializable
      *      min = 8,
      *      minMessage = "Your password must be at least {{ limit }} characters long",
      * )
+     * @Assert\NotBlank
      */
     private $passw;
-
-
 
     /**
      * @ORM\Column(type="string", length=30)
@@ -110,21 +113,29 @@ class User implements UserInterface, \Serializable
      *     htmlPattern = "^[0-9]+$"
      * )
      * @Assert\NotNull(message="This value can not be null")
+     * @Assert\NotBlank(message="This value cannot be empty!")
      */
     private $tel;
 
     /**
      * @ORM\Column(type="string", length=50)
      * @Assert\NotNull(message="This value can not be null")
-     *
+     * @Assert\NotBlank(message="This value cannot be empty!")
      */
     private $adresse;
 
     /**
      * @ORM\Column(type="string", length=255)
-     *
+     * @Assert\NotNull(message="This value can not be null")
+     *@Assert\NotBlank
      */
     private $image;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $banned = false;
+
 
     /**
      * @ORM\OneToMany(targetEntity=Reclamation::class, mappedBy="id_user", orphanRemoval=true)
@@ -300,6 +311,18 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
+    public function getBanned(): ?bool
+    {
+        return $this->banned;
+    }
+
+    public function setBanned(bool $banned): self
+    {
+        $this->banned = $banned;
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, Reclamation>
      */
@@ -468,10 +491,17 @@ class User implements UserInterface, \Serializable
 
     }
 
+    public function getUser()
+    {
+        return User::class;
+
+    }
+
     public function eraseCredentials()
     {
 
     }
+
 
     public function serialize()
     {
@@ -498,6 +528,18 @@ class User implements UserInterface, \Serializable
     {
         return in_array(self::ROLE_ADMIN,$this->getRoles());
     }
+
+    public function isUser():bool
+    {
+        return in_array(self::ROLE_USER,$this->getRoles());
+    }
+
+    public function __toString(): string
+    {
+        return (string)$this->getUsername();
+
+    }
+
 }
 
 

@@ -61,7 +61,20 @@
 
             <section class="">
                 <div class="container">
+                    <center>
+                        <input id="myInput" type="text" placeholder="Search..">
+                        <br><br>
+                    </center>
 
+                    <form role="search" id="nav-search-form" method="" action="{{ path('sortrec') }}">
+                        <div class="btn-toolbar" role="toolbar" aria-label="Programmatic control">
+                            <div class="btn-group btn-group-sm" aria-label="Set Select2 option">
+                                <button class="js-programmatic-set-val btn btn-outline-primary mr-1 mb-1">
+                                    Sort
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                     <div class="row">
                         <div class="col-xl-auto">
                             <div class="table-wrap">
@@ -79,10 +92,9 @@
 
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr class="alert" role="alert">
 
-                                        {% for r in reclamations %}
+                                    <tr class="alert" role="alert">
+                                        {% for r in reclamations %}<tbody id="myTable">
                                         <td>{{ r.IdReclam }}</td>
                                         <td>{{ r.descriptionR }}</td>
                                         <td>{{ r.type }}</td>
@@ -177,4 +189,21 @@
             {% endblock %}
     </body>
 
+    <script src="{{ asset('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+
+
 {% endblock %}
+
+
+
+

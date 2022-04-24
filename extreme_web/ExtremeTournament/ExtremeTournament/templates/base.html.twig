@@ -44,7 +44,7 @@
             <div class="header-holder d-flex flex-wrap justify-content-between align-items-center">
                 <div class="brand-logo d-none d-lg-inline-block">
                     <div class="logo">
-                        <a href="index.html">
+                        <a href="{{ path('app_home') }}">
                             <img src="{{ asset ('assets/images/logo/logo.png') }} "alt="logo">
                         </a>
                     </div>
@@ -60,20 +60,19 @@
                                     <i class="icofont-location-pin"></i> Tunis - Ariana
                                 </li>
                             </ul>
-                            <ul class="social-icons d-flex align-items-center">
-                                <li>
-                                    <a href="#" class="fb"><i class="icofont-facebook-messenger"></i></a>
-                                </li>
-
-                            </ul>
+                          {{ app.user.username }} is connected
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a class="btn btn-secondary" href="{{ path('app_admin')}}" class="login"><i class="icon-dashboard"></i> Dashboard</a>
+                            {% endif %}
                         </div>
-
                     </div>
                     <div class="header-bottom">
-                        <div class="header-wrapper justify-content-lg-end">
-                            <div class="mobile-logo d-lg-none">
-                                <a href="index.html"><img src="{{ asset('assets/images/logo/logo.png') }}" alt="logo"></a>
+                        <center>
+                        <div class="header-wrapper" >
+                            <div class="mobile-logo d-lg-none" >
+                                <a href="{{ path('app_home') }}"><img src="{{ asset('assets/images/logo/logo.png') }}" alt="logo"></a>
                             </div>
+
                             <div class="menu-area">
                                 <ul class="menu">
                                     <li>
@@ -118,12 +117,13 @@
                                     </li>
                                     <li><a href="{{ path ('app_Contact') }}">Contact</a></li>
                                  </ul>
-                                <a href="{{ path('login_security') }}" class="login"><i class="icofont-user"></i> <span>LOG IN</span> </a>
-                                <a href="{{ path('login_signup') }}" class="signup"><i class="icofont-users"></i> <span>SIGN UP</span></a>
+                                <a href="{{ path('modify_user') }}" class="login"><i class="icofont-users-alt-1"></i> <span>Profile</span></a>
+                                <a href="{{ path('security_logout') }}" class="signup"><i class="fa fa-sign-out"></i><span>Logout</span></a>
+
 
                                 <!-- toggle icons -->
                                 <div class="header-bar d-lg-none">
-                                    <span></span>
+                                    <span> </span>
                                     <span></span>
                                     <span></span>
                                 </div>
@@ -133,12 +133,12 @@
                             </div>
                         </div>
                     </div>
+                    </center>
                 </div>
             </div>
         </div>
 
     </header>
-    <!-- ==========Header Section Ends Here========== -->
 
 
 
@@ -156,7 +156,6 @@
 
 {% block footer %}
 
-    <!-- ================ footer Section start Here =============== -->
     <footer class="footer-section">
         <div class="footer-top">
             <div class="container">
@@ -200,7 +199,7 @@
                 </div>
             </div>
         </div>
-        <div class="footer-middle padding-top padding-bottom" style="background-image: url(assets/images/footer/bg.jpg);">
+        <div class="footer-middle padding-top padding-bottom" style="background-image: url('assets/images/footer/bg.jpg');">
             <div class="container">
                 <div class="row padding-lg-top">
                     <div class="col-lg-4 col-md-6 col-12">
@@ -232,8 +231,6 @@
             </div>
         </div>
     </footer>
-    <!-- ================ footer Section end Here =============== -->
-
 
 {% endblock %}
 

@@ -7,8 +7,13 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Captcha\Bundle\CaptchaBundle\Form\Type\CaptchaType;
+use Captcha\Bundle\CaptchaBundle\Validator\Constraints\ValidCaptcha;
+
+
 
 class UserType extends AbstractType
 {
@@ -19,11 +24,17 @@ class UserType extends AbstractType
             ->add('prenom')
             ->add('username')
             ->add('date_naissance',BirthdayType::class)
-            ->add('sexe')
+            ->add('sexe',ChoiceType::class,[
+                'choices' => [
+                    'Male' => 'Male',
+                    'Female' => 'Female',
+                    'Others'=>'Others'
+
+                ]])
             ->add('roles',ChoiceType::class,[
                 'choices' => [
                     'Participant' => 'ROLE_USER',
-                    'Proprietaire' => 'ROLE_PROPRIETAIRE',
+                    'Proprietaire' => 'ROLE_USER',
                     'Administrateur' => 'ROLE_ADMIN'
                 ],
                 'multiple' => true,
@@ -33,18 +44,18 @@ class UserType extends AbstractType
             ->add('passw')
             ->add('tel')
             ->add('adresse')
-           ->add('image',FileType::class, [
-               'mapped' => false,
+            ->add('image',FileType::class, [
+               'mapped' => true,
+                'required' => false
+           ]);
 
 
-           ])
-        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => User::class,
+            'data_class' => User::class
         ]);
     }
 }

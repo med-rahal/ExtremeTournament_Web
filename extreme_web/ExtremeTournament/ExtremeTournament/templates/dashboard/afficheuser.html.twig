@@ -1,190 +1,111 @@
-{% extends 'baseback.html.twig'%}
+{% extends 'baseback.html.twig' %}
+
+ {% block css  %}
 
 
+     <link rel="stylesheet"  href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}">
+     <link rel="stylesheet"  href="{{ asset('assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css')}}">
+     <link rel="stylesheet"  href="{{ asset('assets/vendor/animate/animate.css') }}">
+     <link rel="stylesheet"  href="{{ asset('assets/vendor/select2/select2.min.css') }}">
+     <link rel="stylesheet"  href="{{ asset('assets/vendor/perfect-scrollbar/perfect-scrollbar.css') }}">
+     <link rel="stylesheet"  href="{{ asset('assets/css/buttons.scss') }}">
+
+
+ {% endblock %}
 
 {%  block body  %}
     <body>
-    {% block css  %}
-
-        <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-
-
-
-
-    {% endblock %}
-
-    <!-- Dashboard Header -->
-    <!-- For an image header add the class 'content-header-media' and an image as in the following example -->
-    <div id="page-wrapper">
-        <!-- Preloader -->
-        <!-- Preloader functionality (initialized in js/app.js) - pageLoading() -->
-        <!-- Used only if page preloader is enabled from inc/config (PHP version) or the class 'page-loading' is added in #page-wrapper element (HTML version) -->
-        <div class="preloader themed-background">
-            <h1 class="push-top-bottom text-light text-center"><strong>Pro</strong>UI</h1>
-            <div class="inner">
-                <h3 class="text-light visible-lt-ie10"><strong>Loading..</strong></h3>
-                <div class="preloader-spinner hidden-lt-ie10"></div>
+    <div id="page-content">
+        <!-- END Dashboard Header -->
+        <!-- END Mini Top Stats Row -->
+        <div class="row justify-content-center" >
+            <div class="col-md-6 text-center mb-5">
+                <h2 class="heading-section">Liste des utilisateurs</h2>
             </div>
         </div>
 
+        <center>
+            <input id="myInput" type="text" placeholder="Search..">
+            <br><br>
+        </center>
 
-        <div id="page-content">
-            <!-- END Dashboard Header -->
-
-            <!-- Mini Top Stats Row -->
-            <div class="row">
-                <div class="col-sm-6 col-lg-3">
-
-                </div>
-                <div class="col-sm-6 col-lg-3">
-
-                </div>
-                <div class="col-sm-6 col-lg-3">
-
-                </div>
-                <div class="col-sm-6 col-lg-3">
-
-                </div>
-                <div class="col-sm-6">
-
-                </div>
-                <div class="col-sm-6">
-
+        <form role="search" id="nav-search-form" method="" action="{{ path('listU') }}">
+            <div class="btn-toolbar" role="toolbar" aria-label="Programmatic control">
+                <div class="btn-group btn-group-sm" aria-label="Set Select2 option">
+                    <button class="js-programmatic-set-val btn btn-outline-primary mr-1 mb-1">
+                        Export PDF
+                    </button>
                 </div>
             </div>
-            <!-- END Mini Top Stats Row -->
-            <div class="row justify-content-center">
-                <div class="col-md-6 text-center mb-5">
-                    <h2 class="heading-section">Liste des utilisateurs</h2>
+        </form>
+
+    <div class="limiter">
+        <div class="container-table100">
+            <div class="table-responsive">
+                <div class="table100">
+                    <table class="table  table-bordered table-striped table-hover">
+                        <thead class="table-dark">
+                        <tr class="table100-head">
+                            <th class="column1">Image</th>
+                            <th class="column2">Nom</th>
+                            <th class="column3">Prenom</th>
+                            <th class="column4">Username</th>
+                            <th class="column5">DateNaissance</th>
+                            <th class="column6">Sexe</th>
+                            <th class="column7">Email</th>
+                            <th class="column8">Tel</th>
+                            <th class="column9">Adresse</th>
+                            <th class="column10">IDUSER</th>
+                            <th class="column11">Actions</th>
+                        </tr>
+                        </thead>
+                        {% for u in users %}
+                        <tbody id="myTable">
+                        <tr class="alert" role="alert"><td class="column1"> <img src="{{ asset('uploads/' ~ u.image)}}" style="width:80px" style="height: 80px" class="img-rounded"/></td>
+                            <td class="column2">{{ u.nom }}</td>
+                            <td class="column3">{{ u.prenom }}</td>
+                            <td class="column4">{{ u.username }}</td>
+                            <td class="column5">{{ u.DateNaissance.format('Y-m-d ')}}</td>
+                            <td class="column6">{{ u.sexe }}</td>
+                            <td class="column7">{{ u.email }}</td>
+                            <td class="column8">{{ u.tel}}</td>
+                            <td class="column9">{{ u.adresse }}</td>
+                            <td class="column10">{{ u.IdUser}}</td>
+
+                                <td>
+                                <button id="button" > <a class="fa fa-edit" href="{{ path('updateuser',{'id':u.IdUser})  }}">Modify</a></button>
+                                <button class="js-programmatic-set-val btn btn-outline-primary mr-1 mb-1" style="width:80px" style="height: 40px" > <a class="fa fa-trash" href="{{ path('deleteuser',{'id':u.IdUser})  }}">Delete</a></button>
+                                {% if (u.banned == true) %}
+                                    <button class="js-programmatic-set-val btn btn-outline-primary mr-1 mb-1" style="width:80px" style="height: 40px" ><a class="fa fa-unlock" href="{{ path('unblockuser',{'id':u.IdUser})}}">Unblock</a></button>
+                                {% else  %}
+                                    <button class="js-programmatic-set-val btn btn-outline-primary mr-1 mb-1" style="width:80px" style="height: 40px" ><a class="fa fa-ban" href="{{ path('blockuser',{'id':u.IdUser})}}">Block</a></button>
+                                {% endif %}
+                                </td>
+                        </tr>
+                        </tbody>
+                        {% endfor %}
+                    </table>
                 </div>
             </div>
-
-            <section class="">
-                <div class="container">
-
-                    <div class="row">
-                        <div class="col-xl-auto">
-                            <div class="table-wrap">
-                                <table class="table table-striped table-bordered" >
-                                    <thead class="thead-dark">
-                                    <tr>
-                                        <th>IDUSER</th>
-                                        <th>Nom</th>
-                                        <th>Prenom</th>
-                                        <th>Username</th>
-                                        <th>DateNaissance</th>
-                                        <th>Sexe</th>
-                                        <th>Email</th>
-                                        <th>Password</th>
-                                        <th>Tel</th>
-                                        <th>Adresse</th>
-                                        <th>Image</th>
-                                        <th>Actions</th>
-
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr class="alert" role="alert">
-
-                                        {% for u in users %}
-                                        <td>{{ u.IdUser}}</td>
-                                        <td>{{ u.nom }}</td>
-                                        <td>{{ u.prenom }}</td>
-                                        <td>{{ u.username }}</td>
-                                        <td>{{ u.DateNaissance.format('Y-m-d ')}}</td>
-                                        <td>{{ u.sexe }}</td>
-                                        <td>{{ u.email }}</td>
-                                        <td>{{ u.passw}}</td>
-                                        <td>{{ u.tel}}</td>
-                                        <td>{{ u.adresse }}</td>
-                                        <td>{{ u.image}}</td>
-
-
-                                        <td>
-                                            <button class="bg-light" > <a class="fa fa-trash" href="{{ path('updateuser',{'id':u.IdUser})  }}">Modify</a></button>
-                                            <button class="bg-light" > <a class="fa fa-trash" href="{{ path('deleteuser',{'id':u.IdUser})  }}">Delete</a></button>
-
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                    {% endfor %}
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            {% block userinfos %}
-                <!-- Scroll to top link, initialized in js/app.js - scrollToTop() -->
-                <a href="#" id="to-top"><i class="fa fa-angle-double-up"></i></a>
-
-                <!-- User Settings, modal which opens from Settings link (found in top right user menu) and the Cog link (found in sidebar user info) -->
-                <div id="modal-user-settings" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <!-- Modal Header -->
-                            <div class="modal-header text-center">
-                                <h2 class="modal-title"><i class="fa fa-pencil"></i> Settings</h2>
-                            </div>
-                            <!-- END Modal Header -->
-
-                            <!-- Modal Body -->
-                            <div class="modal-body">
-                                <form action="index.html" method="post" enctype="multipart/form-data" class="form-horizontal form-bordered" onsubmit="return false;">
-                                    <fieldset>
-                                        <legend>Vital Info</legend>
-                                        <div class="form-group">
-                                            <label class="col-md-4 control-label">Username</label>
-                                            <div class="col-md-8">
-                                                <p class="form-control-static">Admin</p>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4 control-label" for="user-settings-email">Email</label>
-                                            <div class="col-md-8">
-                                                <input type="email" id="user-settings-email" name="user-settings-email" class="form-control" value="admin@example.com">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4 control-label" for="user-settings-notifications">Email Notifications</label>
-                                            <div class="col-md-8">
-                                                <label class="switch switch-primary">
-                                                    <input type="checkbox" id="user-settings-notifications" name="user-settings-notifications" value="1" checked>
-                                                    <span></span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                    <fieldset>
-                                        <legend>Password Update</legend>
-                                        <div class="form-group">
-                                            <label class="col-md-4 control-label" for="user-settings-password">New Password</label>
-                                            <div class="col-md-8">
-                                                <input type="password" id="user-settings-password" name="user-settings-password" class="form-control" placeholder="Please choose a complex one..">
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-4 control-label" for="user-settings-repassword">Confirm New Password</label>
-                                            <div class="col-md-8">
-                                                <input type="password" id="user-settings-repassword" name="user-settings-repassword" class="form-control" placeholder="..and confirm it!">
-                                            </div>
-                                        </div>
-                                    </fieldset>
-                                    <div class="form-group form-actions">
-                                        <div class="col-xs-12 text-right">
-                                            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-sm btn-primary">Save Changes</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <!-- END Modal Body -->
-                        </div>
-                    </div>
-                </div>
-                <!-- END User Settings -->
-            {% endblock %}
+        </div>
+    </div>
+    </div>
     </body>
+    </html>
+    <script src="{{ asset('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js') }}"></script>
+    <script>
+        $(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
+
 
 {% endblock %}
+
+
+

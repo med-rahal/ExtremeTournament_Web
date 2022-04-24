@@ -45,6 +45,13 @@ class ReclamationRepository extends ServiceEntityRepository
         }
     }
 
+    public function SortReclamations()
+    {
+        return $this->createQueryBuilder('r')
+            ->orderBy('r.dateR', 'DESC')
+            ->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Reclamation[] Returns an array of Reclamation objects
     //  */
