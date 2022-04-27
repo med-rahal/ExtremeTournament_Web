@@ -2,16 +2,23 @@
 
 namespace App\Controller;
 
+use App\Form\ForgotPasswordType;
 use App\Form\UserType;
+use App\Repository\UserRepository;
+use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
+use KnpU\OAuth2ClientBundle\Client\Provider\GithubClient;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\User;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -21,37 +28,48 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login", name="login_security")
      */
-    public function login(AuthenticationUtils $authenticationUtils,Request $request)
+    public function login(AuthenticationUtils $authenticationUtils, Request $request)
     {
 
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
         return $this->render('security/login.html.twig',
-            ['lastUsername'=>$lastUsername,'error'=>$error]);
-        }
+            ['lastUsername' => $lastUsername, 'error' => $error]);
+    }
+
+    /**
+     * @Route("/connect/github", name="github_connect")
+     */
+    public function connect(ClientRegistry $clientRegistry): RedirectResponse
+    {
+        //dd($clientRegistry->getClient('github'));
+        /** @var GithubClient $client */
+        $client = $clientRegistry->getClient('github');
+        return $client->redirect(['read:user', 'user:email']);
+    }
+
 
     /**
      * @param Request $request
      * @return Response
      * @Route("/Signup",name="login_signup")
      */
-    public function addUser(Request $request,UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer,ValidatorInterface $validator): Response
+    public function addUser(Request $request, UserPasswordEncoderInterface $encoder, \Swift_Mailer $mailer, ValidatorInterface $validator): Response
     {
         $user = new User();
-        $form = $this->createForm(UserType::class,$user);
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-        $errors = $validator->validate($user);
-        if($form->isSubmitted() &&$form->isValid()){
-            $hash = $encoder->encodePassword($user,$user->getPassw());
+        if ($form->isSubmitted() && $form->isValid()) {
+            $hash = $encoder->encodePassword($user, $user->getPassw());
             $user->setPassw($hash);
             $file = $form->get('image')->getData();
-            $fileName = $this->generateUniqueFileName().'.'.$file->guessExtension();
+            $fileName = $this->generateUniqueFileName() . '.' . $file->guessExtension();
             // moves the file to the directory where brochures are stored
             $file->move(
                 $this->getParameter('brochures_directory'),
                 $fileName);
             $user->setImage($fileName);
-            $name=$form->get('username')->getData();
+            $name = $form->get('username')->getData();
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
@@ -62,16 +80,16 @@ class SecurityController extends AbstractController
             $message->setBody(
                 $this->renderView(
                     'security/emailregistration.html.twig',
-                    ['name' => $name ,'img'=> $img]
+                    ['name' => $name, 'img' => $img]
                 ),
                 'text/html'
             )
                 ->attach(\Swift_Attachment::fromPath('C:\Users\MR\Desktop\terms.docx'));
-             $mailer->send($message);
+            $mailer->send($message);
             return $this->redirectToRoute('login_security');
         }
 
-        return $this->render('security/signup.html.twig',['formA'=>$form->createView()]);
+        return $this->render('security/signup.html.twig', ['formA' => $form->createView()]);
 
     }
 
@@ -91,8 +109,82 @@ class SecurityController extends AbstractController
      * @Route("/logout",name="security_logout")
      */
 
-    public function logout(){
+    public function logout()
+    {
 
     }
+
+    /**
+     * @Route("/forgotPassword", name="forgotPassword")
+     */
+    public function forgotPassword(Request $request, UserRepository $userRepo, \Swift_Mailer $mailer, TokenGeneratorInterface $tokenGenerator
+    ): Response
+    {
+        $form = $this->createForm(ForgotPasswordType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $user = $userRepo->findOneByEmail($data['email']);
+
+            if ($user === null) {
+                $this->addFlash('danger', 'Unknown Email!');
+                return $this->redirectToRoute('login_security');
+            }
+
+            $token = $tokenGenerator->generateToken();
+            try{
+                $user->setResetToken($token);
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($user);
+                $entityManager->flush();
+            } catch (\Exception $e) {
+                $this->addFlash('warning', $e->getMessage());
+                return $this->redirectToRoute('app_login');
+            }
+
+            $url = $this->generateUrl('app_reset_password', array('token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
+
+            $message = (new \Swift_Message('Forgot Password'))
+                ->setFrom('xtreametournamnet@gmail.com')
+                ->setTo($user->getEmail())
+                ->setBody(
+                    "Hello,<br><br>For your request of resseting your password , This is your link : " . $url,
+                    'text/html'
+                );
+
+            $mailer->send($message);
+            return $this->redirectToRoute('login_security');
+        }
+
+        return $this->render('security/forgotPassword.html.twig',['emailForm' => $form->createView()]);
+    }
+
+    /**
+     * @Route("/resetPassword{token}", name="app_reset_password")
+     */
+    public function resetPassword(Request $request, string $token, UserPasswordEncoderInterface $passwordEncoder)
+    {
+
+        $user = $this->getDoctrine()->getRepository(User::class)->findOneBy(['reset_token' => $token]);
+        if ($user === null) {
+            $this->addFlash('danger', 'Token Inconnu');
+            return $this->redirectToRoute('login_security');
+        }
+
+        if ($request->isMethod('POST')) {
+            $user->setResetToken(null);
+            $hash = $passwordEncoder->encodePassword($user, $request->request->get('password'));
+            $user->setPassw($hash);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+            return $this->redirectToRoute('login_security');
+        }else {
+            return $this->render('security/resetPassword.html.twig', ['token' => $token]);
+        }
+
+    }
+
 
 }

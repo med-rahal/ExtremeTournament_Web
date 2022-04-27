@@ -34,8 +34,7 @@ class UserType extends AbstractType
             ->add('roles',ChoiceType::class,[
                 'choices' => [
                     'Participant' => 'ROLE_USER',
-                    'Proprietaire' => 'ROLE_USER',
-                    'Administrateur' => 'ROLE_ADMIN'
+                    'Proprietaire' => 'ROLE_USER'
                 ],
                 'multiple' => true,
                 'label' => 'Rôles'
@@ -44,10 +43,7 @@ class UserType extends AbstractType
             ->add('passw')
             ->add('tel')
             ->add('adresse')
-            ->add('image',FileType::class, [
-               'mapped' => true,
-                'required' => false
-           ]);
+            ->add('image',FileType::class);
 
 
     }

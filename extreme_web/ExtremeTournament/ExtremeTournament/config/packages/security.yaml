@@ -9,7 +9,7 @@ security:
         in_database:
             entity:
                 class: App\Entity\User
-                property: username
+                property: email
 
     firewalls:
         dev:
@@ -37,8 +37,10 @@ security:
                 lifetime: 604800
                 always_remember_me: true
             guard:
+                entry_point: App\Security\LoginAuthenticator
                 authenticators:
                     - App\Security\LoginAuthenticator
+                    - App\Security\GithubAuthenticator
 
 
 

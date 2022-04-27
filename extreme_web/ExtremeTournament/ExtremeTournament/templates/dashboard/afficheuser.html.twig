@@ -16,8 +16,6 @@
 {%  block body  %}
     <body>
     <div id="page-content">
-        <!-- END Dashboard Header -->
-        <!-- END Mini Top Stats Row -->
         <div class="row justify-content-center" >
             <div class="col-md-6 text-center mb-5">
                 <h2 class="heading-section">Liste des utilisateurs</h2>
@@ -29,7 +27,7 @@
             <br><br>
         </center>
 
-        <form role="search" id="nav-search-form" method="" action="{{ path('listU') }}">
+        <form role="search" id="nav-search-form" action="{{ path('listU') }}">
             <div class="btn-toolbar" role="toolbar" aria-label="Programmatic control">
                 <div class="btn-group btn-group-sm" aria-label="Set Select2 option">
                     <button class="js-programmatic-set-val btn btn-outline-primary mr-1 mb-1">
@@ -73,7 +71,7 @@
                             <td class="column10">{{ u.IdUser}}</td>
 
                                 <td>
-                                <button id="button" > <a class="fa fa-edit" href="{{ path('updateuser',{'id':u.IdUser})  }}">Modify</a></button>
+                                <button class="js-programmatic-set-val btn btn-outline-primary mr-1 mb-1"  style="width:80px" style="height: 40px" > <a class="fa fa-edit" href="{{ path('updateuser',{'id':u.IdUser})  }}">Modify</a></button>
                                 <button class="js-programmatic-set-val btn btn-outline-primary mr-1 mb-1" style="width:80px" style="height: 40px" > <a class="fa fa-trash" href="{{ path('deleteuser',{'id':u.IdUser})  }}">Delete</a></button>
                                 {% if (u.banned == true) %}
                                     <button class="js-programmatic-set-val btn btn-outline-primary mr-1 mb-1" style="width:80px" style="height: 40px" ><a class="fa fa-unlock" href="{{ path('unblockuser',{'id':u.IdUser})}}">Unblock</a></button>

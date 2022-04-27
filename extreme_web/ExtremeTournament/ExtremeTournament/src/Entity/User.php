@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 
 
@@ -19,6 +20,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
+ * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
 class User implements UserInterface, \Serializable
 {
@@ -30,6 +32,7 @@ class User implements UserInterface, \Serializable
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("post:read")
      */
     private $id_user;
 
@@ -42,7 +45,7 @@ class User implements UserInterface, \Serializable
      *     message="This field cannot contain a number"
      * )
      * @Assert\NotNull(message="This value can not be null")
-     * @Assert\NotBlank
+     * @Groups("post:read")
      */
     private $nom;
 
@@ -53,8 +56,9 @@ class User implements UserInterface, \Serializable
      *     match=false,
      *     message="This field cannot contain a number"
      * )
+     *
      * @Assert\NotNull(message="This value can not be null")
-     * @Assert\NotBlank
+     * @Groups("post:read")
      */
     private $prenom;
 
@@ -66,23 +70,29 @@ class User implements UserInterface, \Serializable
      *     message="This field cannot contain a number"
      * )
      * @Assert\NotNull(message="This value can not be null")
-     * @Assert\NotBlank
+     * @Groups("post:read")
      */
     private $username;
 
+
     /**
      * @ORM\Column(type="date")
+     * @Groups("post:read")
+     * @Assert\NotNull(message="This value can not be null")
      */
     private $date_naissance;
 
     /**
      * @ORM\Column(type="string", length=30)
+     * @Assert\NotNull(message="This value can not be null")
+     * @Groups("post:read")
+     *
      */
     private $sexe;
 
     /**
      * @ORM\Column(type="json")
-     *
+     * @Groups("post:read")
      */
     private $roles = [];
 
@@ -92,7 +102,7 @@ class User implements UserInterface, \Serializable
      *     message = "The email '{{ value }}' is not a valid email."
      * )
      * @Assert\NotNull(message="This value can not be null")
-     * @Assert\NotBlank
+     * @Groups("post:read")
      */
     private $email;
 
@@ -102,7 +112,8 @@ class User implements UserInterface, \Serializable
      *      min = 8,
      *      minMessage = "Your password must be at least {{ limit }} characters long",
      * )
-     * @Assert\NotBlank
+     * @Assert\NotNull(message="This value can not be null")
+     * @Groups("post:read")
      */
     private $passw;
 
@@ -113,28 +124,39 @@ class User implements UserInterface, \Serializable
      *     htmlPattern = "^[0-9]+$"
      * )
      * @Assert\NotNull(message="This value can not be null")
-     * @Assert\NotBlank(message="This value cannot be empty!")
+     * @Groups("post:read")
      */
     private $tel;
 
     /**
      * @ORM\Column(type="string", length=50)
      * @Assert\NotNull(message="This value can not be null")
-     * @Assert\NotBlank(message="This value cannot be empty!")
+     * @Groups("post:read")
      */
     private $adresse;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotNull(message="This value can not be null")
-     *@Assert\NotBlank
+     * @Groups("post:read")
      */
     private $image;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("post:read")
      */
     private $banned = false;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("post:read")
+     */
+    private $github_id;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $reset_token;
 
 
     /**
@@ -251,9 +273,9 @@ class User implements UserInterface, \Serializable
     }
 
 
-    public function getEmail(): ?string
+    public function getEmail():string
     {
-        return $this->email;
+        return (string)$this->email;
     }
 
     public function setEmail(string $email): self
@@ -265,7 +287,7 @@ class User implements UserInterface, \Serializable
 
     public function getPassw(): ?string
     {
-        return $this->passw;
+        return (string)$this->passw;
     }
 
     public function setPassw(string $passw): self
@@ -304,7 +326,7 @@ class User implements UserInterface, \Serializable
         return $this->image;
     }
 
-    public function setImage(string $image): self
+    public function setImage($image): self
     {
         $this->image = $image;
 
@@ -475,13 +497,13 @@ class User implements UserInterface, \Serializable
      *
      * @see UserInterface
      */
-    public function getUsername(): string
+    public function getUsername():?string
     {
-        return (string) $this->username;
+        return $this->username;
     }
 
 
-    public function getPassword():string
+    public function getPassword():?string
     {
         return $this->passw;
     }
@@ -538,6 +560,30 @@ class User implements UserInterface, \Serializable
     {
         return (string)$this->getUsername();
 
+    }
+
+    public function getGithubId(): ?string
+    {
+        return $this->github_id;
+    }
+
+    public function setGithubId(?string $github_id): self
+    {
+        $this->github_id = $github_id;
+
+        return $this;
+    }
+
+    public function getResetToken(): ?string
+    {
+        return $this->reset_token;
+    }
+
+    public function setResetToken(?string $reset_token): self
+    {
+        $this->reset_token = $reset_token;
+
+        return $this;
     }
 
 }

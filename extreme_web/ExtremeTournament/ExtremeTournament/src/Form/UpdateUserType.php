@@ -33,8 +33,7 @@ class UpdateUserType extends AbstractType
             ->add('roles',ChoiceType::class,[
                 'choices' => [
                     'Participant' => 'ROLE_USER',
-                    'Proprietaire' => 'ROLE_PROPRIETAIRE',
-                    'Administrateur' => 'ROLE_ADMIN'
+                    'Proprietaire' => 'ROLE_PROPRIETAIRE'
                 ],
                 'multiple' => true,
                 'label' => 'Rôles'

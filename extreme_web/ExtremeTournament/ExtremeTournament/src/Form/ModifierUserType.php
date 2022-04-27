@@ -31,8 +31,7 @@ class ModifierUserType extends AbstractType
             ->add('roles',ChoiceType::class,[
                 'choices' => [
                     'Participant' => 'ROLE_USER',
-                    'Proprietaire' => 'ROLE_USER',
-                    'Administrateur' => 'ROLE_ADMIN'
+                    'Proprietaire' => 'ROLE_USER'
                 ],
                 'multiple' => true,
                 'label' => 'Rôles'

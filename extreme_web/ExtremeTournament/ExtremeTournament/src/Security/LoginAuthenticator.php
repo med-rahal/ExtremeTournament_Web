@@ -54,7 +54,7 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator implements Passw
         ];
         $request->getSession()->set(
             Security::LAST_USERNAME,
-            $credentials['username']
+            $credentials['email']
         );
 
         return $credentials;
@@ -70,7 +70,7 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator implements Passw
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
 
         if (!$user) {
-            throw new UsernameNotFoundException('Username could not be found.');
+            throw new UsernameNotFoundException('email could not be found.');
         }
 
         return $user;

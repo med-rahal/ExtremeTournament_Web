@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ModifierUserType;
-use App\Form\UserType;
 use App\Repository\UserRepository;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -16,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class UserController extends AbstractController
 {
@@ -24,7 +24,7 @@ class UserController extends AbstractController
      * @param $id
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
-     * @Route("/modifier",name="modify_user")
+     * @Route("/profile",name="modify_user")
      */
 
     public function update(UserRepository $repository, Request $request)
@@ -34,19 +34,26 @@ class UserController extends AbstractController
         $form->handleRequest($request);
         $file = $form->get('image')->getData();
         if ($form->isSubmitted() && $form->isValid()) {
-            $fileName = $this->generateUniqueFileName() . '.' . $file->guessExtension();
-            // moves the file to the directory where brochures are stored
-            $file->move(
-                $this->getParameter('brochures_directory'),
-                $fileName
-            );
+            if($file!=null){
+                $fileName = $this->generateUniqueFileName() . '.' . $file->guessExtension();
+                // moves the file to the directory where brochures are stored
+                $file->move(
+                    $this->getParameter('brochures_directory'),
+                    $fileName
+                );
 
-           // $user->setImage(new File($this->getParameter('brochures_directory').'/'.$user->getImage()));
-            $user->setImage($fileName);
+                // $user->setImage(new File($this->getParameter('brochures_directory').'/'.$user->getImage()));
+                    $user->setImage($fileName);
+
+            }
+            else {
+                $user->setImage($user->getImage());
+            }
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             return $this->redirectToRoute('app_home');
         }
+
         return $this->render('user/modify_user.html.twig', ['formA' => $form->createView(),'img'=>$file]);
 
 
@@ -78,8 +85,6 @@ class UserController extends AbstractController
 
 
     }
-
-
 
 
     /**
@@ -124,6 +129,131 @@ class UserController extends AbstractController
     }
 
 
+
+
+
+
+    /////////MOBILE//////////
+
+    /**
+     * @param Request $request
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @Route("/AllUsers",name="allusers")
+     */
+
+    public function AllUsers(Request $request,NormalizerInterface $normalizer)
+    {
+        $repository = $this->getDoctrine()->getRepository(User::class);
+        $users = $repository->findAll();
+        $jsoncontent = $normalizer->normalize($users,'json',['groups'=>'post:read']);
+        return New Response(json_encode($jsoncontent));
+
+
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @Route("/user/{id}",name="userid")
+     */
+
+    public function UserID(Request $request,$id,NormalizerInterface $normalizer)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)->find($id);
+        $jsoncontent = $normalizer->normalize($user,'json',['groups'=>'post:read']);
+        return New Response(json_encode($jsoncontent));
+
+
+    }
+
+    /**
+     * @param Request $request
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @Route("/addUserJSON/new",name="adduserJSON")
+     */
+
+    public function addUserJSON(Request $request,NormalizerInterface $normalizer)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = new User();
+        $user->setNom($request->get('nom'));
+        $user->setPrenom($request->get('prenom'));
+        $user->setUsername($request->get('username'));
+        $user->setDateNaissance(date_create_from_format("Y-m-d",$request->get("date_naissance")));
+        $user->setSexe($request->get('sexe'));
+        $user->setEmail($request->get('email'));
+        $user->setPassw($request->get('passw'));
+        $user->setTel($request->get('tel'));
+        $user->setAdresse($request->get('adresse'));
+        $user->setImage($request->get('image'));
+        $user->setBanned($request->get('banned'));
+        $user->setGithubId($request->get('github_id'));
+        $em->persist($user);
+        $em->flush();
+        $jsoncontent = $normalizer->normalize($user,'json',['groups'=>'post:read']);
+        return New Response(json_encode($jsoncontent));
+
+    }
+
+
+    /**
+     * @param Request $request
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @Route("/updateUserJSON/{id}",name="updateuserJSON")
+     */
+
+    public function updateUserJSON(Request $request,NormalizerInterface $normalizer,$id)
+    {
+        $em =  $this->getDoctrine()->getManager();
+        $user= $em->getRepository(User::class)->find($id);
+        $user->setNom($request->get('nom'));
+        $user->setPrenom($request->get('prenom'));
+        $user->setUsername($request->get('username'));
+        $user->setDateNaissance(date_create_from_format("Y-m-d",$request->get("date_naissance")));
+        $user->setSexe($request->get('sexe'));
+        $user->setEmail($request->get('email'));
+        $user->setPassw($request->get('passw'));
+        $user->setTel($request->get('tel'));
+        $user->setAdresse($request->get('adresse'));
+        $user->setImage($request->get('image'));
+        $user->setBanned($request->get('banned'));
+        $user->setGithubId($request->get('github_id'));
+        $em->flush();
+        $jsoncontent = $normalizer->normalize($user,'json',['groups'=>'post:read']);
+        return New Response(json_encode($jsoncontent));
+
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @Route("/deleteuserJSON/{id}",name="deleteuserJSON")
+     */
+
+    public function deleteUserJSON(Request $request,$id,NormalizerInterface $normalizer)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)->find($id);
+        $em->remove($user);
+        $em->flush();
+        $jsoncontent = $normalizer->normalize($user,'json',['groups'=>'post:read']);
+        return New Response(json_encode($jsoncontent));
+
+
+    }
 
 
 

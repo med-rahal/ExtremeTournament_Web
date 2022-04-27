@@ -22,13 +22,6 @@ class DashboardController extends AbstractController
         return $this->render('dashboard/index.html.twig');
     }
 
-    /**
-     * @Route("/", name="baseback")
-     */
-    public function base(): Response
-    {
-        return $this->render('baseback.html.twig');
-    }
 
     /**
      * @Route("/admin/user", name="afficheuser")
