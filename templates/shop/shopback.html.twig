@@ -1,0 +1,81 @@
+{% extends 'baseback.html.twig' %}
+{% block body %}
+<body>
+
+<h1 style="margin-left: 20px;margin-bottom: -20px;margin-top: 20px;color: white">All Products  </h1>
+<div style="margin-left: 850px;margin-bottom: 10px">
+    <img class="" height="25px" width="25px" src="{{ asset('productImages/searchicon.png' ) }}"> <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Product Name">
+</div>
+
+<table  class="table table-dark"  id="myTable">
+    <tr>
+
+        <th>Nom</th>
+        <th>Description</th>
+        <th>Categorie</th>
+        <th>Stock</th>
+        <th>Prix</th>
+        <th>Disponibilite</th>
+<th>Action</th>
+
+
+    </tr>
+    {% for p in produitlist %}
+        <tr class="header">
+
+            <td>
+                {{p.nomProd}}
+            </td>
+            <td>
+                {{ p.Descriptif }}
+            </td>
+<td> {{p.categorieProd}}</td>
+
+            <td>
+                {{ p.totalEnStock}}
+            </td>
+
+            <td>
+                {{p.prix}}
+            </td>
+            <td>
+                {{p.disponibilite}}
+            </td>
+            <td><a href="{{ path('delp',{'idp':p.refProd}) }}"> <button type="button" class="btn btn-danger" style="font-size: 8px">Delete</button></a>
+       <a href="{{ path('modp',{'idp': p.refProd}) }}"> <button type="button" class="btn btn-warning" style="font-size: 8px" >Modifier</button></a>
+            </td>
+        </tr>
+    {%endfor%}
+</table>
+
+<div>
+    <a href="{{ path('pdf')}}" style="margin-left: 900px"> <button type="button" class="btn btn-outline-primary" style="font-size: 10px" >Enregistrer Liste </button></a>
+    <a href="{{ path('add_form')}}" style="margin-left: 900px"> <button type="button" class="btn btn-outline-primary" style="font-size: 10px" >Ajouter</button></a>
+
+</div>
+
+<!-- search -->
+<script>
+    function myFunction() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+</script>
+
+{% endblock %}

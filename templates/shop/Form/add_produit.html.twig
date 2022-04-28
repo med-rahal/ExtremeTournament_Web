@@ -1,0 +1,53 @@
+{% extends 'baseback.html.twig' %}
+{% block body %}
+<body>
+<div><h1 style="color: white">Ajouter un nouveau produit</h1></div>
+
+<div>
+<form action="add_prod" method="get">
+    <div class="form-group">
+        <label style="color: white">Name </label>
+        <input type="text"  name="name" class="form-control" id="exampleInputEmail1"  placeholder="product name"  required>
+
+    </div>
+    <div class="form-group">
+        <label style="color: white">Description </label>
+        <input type="text"  name="Description" class="form-control"   placeholder="Description" pattern="[A-Za-z]*" required>
+
+    </div>
+    <div class="form-group">
+        <label style="color: white">Categorie </label>
+        <input type="text"  name="Categorie" class="form-control"   placeholder="Categorie" pattern="[A-Za-z]*" required>
+
+    </div>
+
+    <div class="form-group">
+        <label style="color: white">Stock </label>
+        <input type="number"  name="Stock" class="form-control"   placeholder="Stock" required>
+
+    </div>
+    <div class="form-group">
+        <label style="color: white">Prix</label>
+        <input type="number"  name="Prix" class="form-control"   placeholder="Prix" required>
+
+    </div>
+
+    <div class="form-group">
+        <label style="color: white">Disponibilite </label>
+        <select type="text"  name="Disponibilite" class="form-control"   placeholder="Disponibilite" required>
+            <option value="disponible">Disponible</option>
+            <option value="Non disponible">Non Disponible</option>
+        </select>
+
+    </div>
+
+    <div class="form-group">
+        <label style="color: white">Image </label>
+        <input type="file"  name="image" class="form-control"   placeholder="image" accept="image/*" required>
+
+    </div>
+    <button type="submit" class="btn btn-primary">Ajouter</button>
+</form>
+</div>
+</body>
+{% endblock %}

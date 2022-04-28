@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>pdf</title>
+</head>
+<body>
+<h1 style="margin-left: 800px;color: #0000cc">Products List  </h1>
+
+
+{% for p in produitlist %}
+    <div>
+        <h1>Product name:  {{p.nomProd}} </h1>
+        <h1>Description:  {{ p.Descriptif }}</h1>
+        <h1>Category:  {{p.categorieProd}}</h1>
+        <h1>Price:    {{p.prix}}</h1>
+        <h1>Stock:     {{ p.totalEnStock}}</h1>
+        <h1 style="border-bottom: 5px solid blue;"></h1>
+    </div>
+
+{%endfor%}
+
+
+
+</body>
+</html>
