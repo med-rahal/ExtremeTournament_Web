@@ -1,0 +1,273 @@
+{% extends 'base.html.twig' %}
+
+
+
+{% block body %}
+
+    <body>
+    <!-- preloader start here -->
+    <div class="preloader">
+        <div class="preloader-inner">
+            <div class="preloader-icon">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <!-- preloader ending here -->
+
+    <!-- scrollToTop start here -->
+    <a href="#" class="scrollToTop"><i class="icofont-rounded-up"></i></a>
+    <!-- scrollToTop ending here -->
+
+    <!-- ==========shape image Starts Here========== -->
+    <div class="body-shape">
+        <img src="assets/images/shape/body-shape.png" alt="shape">
+    </div>
+    <!-- ==========shape image end Here========== -->
+
+
+
+
+    <!-- ==========Header Section Starts Here========== -->
+
+
+
+
+    <!-- ===========PageHeader Section Start Here========== -->
+    <section class="pageheader-section" style="background-image: url(../../public/assets/images/pageheader/bg.jpg);">
+        <div class="container">
+            <div class="section-wrapper text-center text-uppercase">
+                <h2 class="pageheader-title">shop page</h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center mb-0">
+                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">shop</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </section>
+    <!-- ===========PageHeader Section Ends Here========== -->
+
+
+
+    <!-- ===========Shop Section Ends Here========== -->
+    <div class="shop-page padding-top padding-bottom aside-bg">
+        <div class="container" >
+            <div class="row justify-content-center pb-15">
+                <div class="col-lg-8 col-12">
+                    <div style="width: 400px ;margin-left: 50px" >
+                        {# Notification delete update region #}
+                        {% for message in app.flashes('success') %}
+                            <div class="alert alert-success">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <article style="margin-right: 150px">
+                        <div class="shop-title d-flex flex-wrap justify-content-between">
+                            <p>All Products</p>
+                            <div class="product-view-mode">
+                                <a class="active" data-target="grid"><i class="icofont-ghost"></i></a>
+                                <a data-target="list"><i class="icofont-listine-dots"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="shop-product-wrap grid row  g-4">
+                            {% for p in produitlist %}
+                            <div class="col-4">
+                                <div class="product-item">
+                                    <div class="product-thumb">
+                                        <div class="pro-thumb">
+                                            <img src="{{ asset('productImages/' ~ p.image ) }}" style="height: 150px; width: 250px">
+                                        </div>
+                                        <form action="add_cart" method="get">
+                                        <div class="product-action-link">
+                                            <div> <input type="number" min="1" style="width: 55px;color: white" value="1" name="quantite"/></div>
+                                            <div hidden> <input type="number"  style="width: 55px;color: white" value={{ p.refProd }} name="ref_prod"/></div>
+                                            <button type="submit" class="icofont-cart-alt"> </button>
+                                        </div>
+                                        </form>
+                                    </div>
+                                    <div class="product-content">
+                                        <h5 style="color: deeppink">{{p.nomProd}}</h5>
+                                        <h6 style="font-size: 10px;font-family:Arial,serif">{{ p.Descriptif }}</h6>
+                                        <p><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i></p>
+                                        <h6>{{p.prix}} $</h6>
+                                    </div>
+                                </div>
+                                <div class="product-list-item">
+                                    <div class="product-thumb">
+                                        <div class="pro-thumb">
+                                            <img src="{{ asset('productImages/' ~ p.image ) }}">
+                                        </div>
+                                        <div class="product-action-link">
+                                            <a href="#"><i class="icofont-heart"></i></a>
+                                            <a href="#"><i class="icofont-cart-alt"></i></a>
+                                        </div>
+                                    </div>
+                                    <div class="product-content">
+                                        <h5><a href="#">{{p.nomProd}}</a></h5>
+
+                                        <p><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i><i class="icofont-star"></i></p>
+                                        <h6>
+                                            {{p.prix}} $
+                                        </h6>
+
+                                    </div>
+                                </div>
+                                <div style="margin-top: 8px;margin-left: 40px">
+                                <a href="{{ path('Qrcode',{'produitName':p.nomProd}) }}"> <button type="button" class="btn btn-outline-primary" >Generate QR <i class="fa fa-qrcode"></i></button></a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        <ul class="default-pagination lab-ul">
+                            <li>
+                                <a href="#"><i class="icofont-rounded-left"></i></a>
+                            </li>
+                            <li>
+                                <a href="#">01</a>
+                            </li>
+                            <li>
+                                <a href="#" class="active">02</a>
+                            </li>
+                            <li>
+                                <a href="#">03</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="icofont-rounded-right"></i></a>
+                            </li>
+                        </ul>
+                        </div>
+                    </article>
+                </div>
+
+
+
+
+                <div class="col-lg-4 col-md-7 col-12">
+                    <aside class="ps-lg-4">
+                        <div class="widget widget-search">
+                            <div class="widget-header">
+                                <h5>Search Product with Qr</h5>
+                                {% if qrCode %}
+                                    <img src="{{ qrCode }}" alt="qr-code">
+                                {% endif %}
+                            </div>
+
+                        </div>
+
+                        <div class="widget shop-widget">
+                            <div class="widget-header">
+                                <h5>All Categories</h5>
+                            </div>
+                            <div class="widget-wrapper">
+                                <ul class="shop-menu lab-ul">
+                                    <li>
+                                        <a href="#0">Code Optimization</a>
+                                        <ul class="shop-submenu lab-ul">
+                                            <li><a href="#0">All Products</a>
+                                                <ul class="shop-submenu lab-ul">
+                                                    <li><a href="#0">All Products</a></li>
+                                                    <li><a href="#0">Seo</a></li>
+                                                    <li><a href="#0">Marketing</a></li>
+                                                    <li><a href="#0">Email Marketing</a></li>
+                                                    <li><a href="#0">Seo Support</a></li>
+                                                </ul>
+                                            </li>
+                                            <li><a href="#0">Seo</a></li>
+                                            <li><a href="#0">Marketing</a></li>
+                                            <li><a href="#0">Email Marketing</a></li>
+                                            <li><a href="#0">Seo Support</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#0">Monitoring Ranking</a>
+                                        <ul class="shop-submenu lab-ul">
+                                            <li><a href="#0">All Products</a></li>
+                                            <li><a href="#0">Seo</a></li>
+                                            <li><a href="#0">Marketing</a></li>
+                                            <li><a href="#0">Email Marketing</a></li>
+                                            <li><a href="#0">Seo Support</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#0">Target Strategy</a>
+                                        <ul class="shop-submenu lab-ul">
+                                            <li><a href="#0">All Products</a></li>
+                                            <li><a href="#0">Seo</a></li>
+                                            <li><a href="#0">Marketing</a></li>
+                                            <li><a href="#0">Email Marketing</a></li>
+                                            <li><a href="#0">Seo Support</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#0">Nap Syndication</a>
+                                        <ul class="shop-submenu lab-ul">
+                                            <li><a href="#0">All Products</a></li>
+                                            <li><a href="#0">Seo</a></li>
+                                            <li><a href="#0">Marketing</a></li>
+                                            <li><a href="#0">Email Marketing</a></li>
+                                            <li><a href="#0">Seo Support</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#0">SEO Support</a>
+                                        <ul class="shop-submenu lab-ul">
+                                            <li><a href="#0">All Products</a></li>
+                                            <li><a href="#0">Seo</a></li>
+                                            <li><a href="#0">Marketing</a></li>
+                                            <li><a href="#0">Email Marketing</a></li>
+                                            <li><a href="#0">Seo Support</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#0">Email Marketing</a>
+                                        <ul class="shop-submenu lab-ul">
+                                            <li><a href="#0">All Products</a></li>
+                                            <li><a href="#0">Seo</a></li>
+                                            <li><a href="#0">Marketing</a></li>
+                                            <li><a href="#0">Email Marketing</a></li>
+                                            <li><a href="#0">Seo Support</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="#0">Engine Marketing</a>
+                                        <ul class="shop-submenu lab-ul">
+                                            <li><a href="#0">All Products</a></li>
+                                            <li><a href="#0">Seo</a></li>
+                                            <li><a href="#0">Marketing</a></li>
+                                            <li><a href="#0">Email Marketing</a></li>
+                                            <li><a href="#0">Seo Support</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                    </aside>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- ===========Shop Section Ends Here========== -->
+
+
+
+    <!-- Google Analytics: change UA-XXXXX-Y to be your site's ID. -->
+    <script>
+        window.ga = function () {
+            ga.q.push(arguments)
+        };
+        ga.q = [];
+        ga.l = +new Date;
+        ga('create', 'UA-XXXXX-Y', 'auto');
+        ga('set', 'anonymizeIp', true);
+        ga('set', 'transport', 'beacon');
+        ga('send', 'pageview')
+    </script>
+    <script src="https://www.google-analytics.com/analytics.js" async></script>
+
+
+
+    </body>
+
+
+{% endblock %}
