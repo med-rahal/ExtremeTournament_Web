@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <style>
+        .card {
+            background-color: #15172b;
+            border-radius: 20px;
+            box-sizing: border-box;
+
+
+            width: 320px;
+        }
+    </style>
+
+    <div class="row" >
+        <div  style="display: flex;align-items: center;justify-content: center;margin-top: 200px; padding: 10px;">
+
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title" style="background-color: #2e383c">Add Team</h3>
+                    {{ form_start(form,{attr:{novalidate:'novalidate'}}) }}
+                    <label for="inputText" class="col-sm-4 col-form-label" >Team Name</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(form.nom_equipe,{'attr':{'class':'form-control'}}) }}
+
+                    </div>
+                    {{ form_errors(form.nom_equipe,{'attr':{'class':'text-danger'}}) }}
+
+
+
+                    <label for="inputText" class="col-sm-4 col-form-label" >User</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(form.id_user,{'attr':{'class':'form-control'}}) }}
+
+                    </div>
+                    {{ form_errors(form.id_user,{'attr':{'class':'text-danger'}}) }}
+
+                    <label for="inputText" class="col-sm-4 col-form-label" >Participants</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(form.nb_participants,{'attr':{'class':'form-control'}}) }}
+                    </div>
+                    {{ form_errors(form.nb_participants,{'attr':{'class':'text-danger'}}) }}
+
+
+                    <div class="dropzone my-dropzone" id="form_snippet_image" action="{{path('listTeamfront')}}">
+                    </div>
+
+                    <label for="inputText" class="col-sm-4 col-form-label" >Image</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(form.photo,{'attr':{'class':'form-control'}}) }}
+                    </div>
+                    {{ form_errors(form.photo,{'attr':{'class':'text-danger'}}) }}
+
+                    <label for="inputText" class="col-sm-4 col-form-label" >Category</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(form.categorie,{'attr':{'class':'form-control'}}) }}
+                    </div>
+                    {{ form_errors(form.categorie,{'attr':{'class':'text-danger'}}) }}
+
+                    <label for="inputText" class="col-sm-4 col-form-label" >Password</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(form.Epass,{'attr':{'class':'form-control'}}) }}
+                    </div>
+                    {{ form_errors(form.Epass,{'attr':{'class':'text-danger'}}) }}
+
+                    <label for="inputText" class="col-sm-4 col-form-label" >Match</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(form.matches,{'attr':{'class':'form-control'}}) }}
+                    </div>
+                    {{ form_errors(form.matches,{'attr':{'class':'text-danger'}}) }}
+
+
+
+
+
+                    <br/>
+                    <div class="col-sm-10" style="display: flex;align-items: center;justify-content: center">
+
+                        {{ form_widget(form.Ajouter,{'attr':{'class':'btn btn-primary'}}) }}
+                    </div>
+
+                    {{ form_end(form) }}
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+{% endblock %}

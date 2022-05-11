@@ -1,0 +1,47 @@
+{% extends 'baseback.html.twig' %}
+{% block body %}
+    <table id="example" class="table table-striped table-bordered" style="background-color: #dfe0e1" >
+
+        <thead>
+       <div> <a style="background-color: #0be881" class="btn btn-danger" href="{{ path('addteamBack')}}">Add Team</a></div>
+        <tr>
+            <th class="wd-5p">Team Name </th>
+            <th class="wd-5p">User ID </th>
+            <th class="wd-5p">Participants </th>
+            <th class="wd-5p">Image </th>
+            <th class="wd-5p">category </th>
+            <th class="wd-5p">Password </th>
+
+
+        </tr>
+
+        </thead>
+
+
+        <tbody>
+
+        {% for e in equipe %}
+            <tr>
+                <td>{{ e.getNomEquipe()}}</td>
+                <td>{{ e.getIdUser()}}</td>
+                <td>{{e.getNbParticipants}}</td>
+                <td>{{e.getImage()}}</td>
+                <td>{{e.getCategorie()}}</td>
+                <td>{{e.Epass}}</td>
+
+             <td>
+                 <a class="btn btn-danger" href="{{ path('deleteTeam',{'id':e.getNomEquipe})}}">delete</a>
+                 <a style="background-color: #e6db74" class="btn btn-danger" href="{{ path('UpdateTeam',{'id':e.getNomEquipe})}}">update</a>
+             </td>
+
+
+
+
+            </tr>
+        {% endfor %}
+        </tbody>
+
+
+
+    </table>
+{% endblock %}

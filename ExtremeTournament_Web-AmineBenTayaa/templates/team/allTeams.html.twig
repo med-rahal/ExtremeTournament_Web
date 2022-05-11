@@ -1,0 +1,185 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+    <!-- preloader start here -->
+    <div class="preloader">
+        <div class="preloader-inner">
+            <div class="preloader-icon">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <!-- preloader ending here -->
+
+    <!-- scrollToTop start here -->
+    <a href="#" class="scrollToTop"><i class="icofont-rounded-up"></i></a>
+    <!-- scrollToTop ending here -->
+
+    <!-- ==========shape image Starts Here========== -->
+    <div class="body-shape">
+        <img src="{{ asset('assets/images/shape/body-shape.png') }}" alt="shape">
+    </div>
+    <!-- ==========shape image end Here========== -->
+
+
+
+
+
+
+
+    <!-- ===========Banner Section start Here========== -->
+    <section class="pageheader-section" style="background-image: url(assets/images/pageheader/bg.jpg);">
+        <div class="container">
+            <div class="section-wrapper text-center text-uppercase">
+                <h2 class="pageheader-title">our team</h2>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center mb-0">
+                        <li class="breadcrumb-item"><a href="{{ path('app_home') }}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Team</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </section>
+    <!-- ===========Banner Section Ends Here========== -->
+
+
+
+    <!-- ===========Player  Section start Here========== -->
+    <style>
+        .sidebar-search,nav-second-level {
+            margin-left: 630px;
+            width: 20%;
+        }
+
+    </style>
+    <div class="sidebar-search">
+
+         <div class="input-group custom-search-form">
+
+             <img class="img_search" src="{{ asset('/assets/images/logo/rechercheicon.png') }} " width="50px" height="50px"> <input type="text" id="search" class="form-control" placeholder="Search here">
+        </div>
+        <!-- /input-group -->
+    </div>
+    <ul class="nav" id="side-menu">
+        <li>
+            <a href="#" > <span class="fa arrow"></span></a>
+            <ul class="nav nav-second-level" id="entitiesNav" style="background-color: #252424">
+            </ul>
+        </li>
+    </ul><br><br><br><br>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+        jQuery(document).ready(function() {
+            var searchRequest = null;
+            $("#search").keyup(function() {
+                var minlength = 1;
+                var that = this;
+                var value = $(this).val();
+                var entitySelector = $("#entitiesNav").html('');
+                if (value.length >= minlength ) {
+                    if (searchRequest != null)
+                        searchRequest.abort();
+                    searchRequest = $.ajax({
+                        type: "GET",
+                        url: "{{ path('SearchTeam') }}",
+                        data: {
+                            'q' : value
+                        },
+                        dataType: "text",
+                        success: function(msg){
+                            //we need to check if the value is the same
+                            if (value===$(that).val()) {
+                                var result = JSON.parse(msg);
+                                $.each(result, function(key, arr) {
+                                    $.each(arr, function(id, value) {
+                                        if (key === 'equipe') {
+                                            if (id !== 'error') {
+                                                console.log(value[1]);
+                                                entitySelector.append('<li><b>'+value[1]+'</b><a href="/app_Myteam/'+id+'">'+'<img src="{{ asset('uploads/equipe/') }}'+value[0]+'" style="width: 50px; height: 50px"/>'+'</a></li>');
+                                            } else {
+                                                entitySelector.append('<li class="errorLi">'+value+'</li>');
+                                            }
+                                        }
+                                    });
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+    <div class="player-section padding-top padding-bottom">
+        <div class="container">
+
+            <div class="section-wrapper">
+                <div class="row g-4 justify-content-center">
+    {% for e in equipe %}
+
+                        <div class="col-lg-4 col-sm-6 col-12">
+                            <div class="player-item-2 text-center" style="background-image: url(assets/images/team/4.jpg);">
+                                <div class="player-inner-2">
+                                    <div class="player-thumb-2">
+                                        <img src="{{ asset("/uploads/equipe/#{e.getImage()}") }}" width="150px" style=height:150px;object-fit:cover >
+                                    </div>
+                                    <div class="player-content-2">
+
+                                        <h3 style="background-color: #9c3428">Team Name</h3> <h4>{{ e.getNomEquipe()}}</h4>
+                                        <h3 style="background-color: #9c3428">Participants</h3><h4>{{e.getNbParticipants}}</h4>
+                                        <h3 style="background-color: #9c3428">Category</h3><h4>{{e.getCategorie()}}</h4>
+
+                                        <a class="btn btn-danger" href="{{ path('jointeam',{'id_user':e.getIdUser})}}">Join this Team</a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ===========Player  Section Ends Here========== -->
+
+
+    <!-- ===========CTA Section start Here========== -->
+    <section class="cta-section padding-bottom">
+        <div class="container">
+            <div class="cta-wrapper item-layer">
+                <div class="cta-item px-4 px-sm-5 pt-4 pt-sm-5 pt-lg-0" style="background-image: {{ asset('assets/images/cta/bg.jpg') }};">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6">
+                            <div class="cta-content">
+                                <p class="theme-color text-uppercase ls-2">Let's Play together</p>
+                                <h2 class="mb-3">JOIN <span class="theme-color text-uppercase">ExtremeTournament</span> ESPORTS TO BECOME
+                                    NEXT PRO GAMER TODAY!</h2>
+                                <p class="mb-4">Distinctively provide acces mutfuncto users whereas transparent
+                                    proceses somes ncentivize eficient functionalities rather than an
+                                    extensible archtectur services and cross</p>
+                                <a href="signup.html" class="default-button"><span>Join Community <i class="icofont-circled-right"></i></span></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="cta-thumb text-end">
+                                <img src={{ asset('assets/images/cta/01.png') }} alt="gamer-img">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ===========CTA Section Ends Here========== -->
+
+
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'baseback.html.twig' %}
+{% block body %}
+
+
+    <div class="row" >
+        <div  style="display: flex;align-items: center;justify-content: center;margin-top: 60px; padding: 10px;">
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title" style="background-color: #689df5">Add Team Backend ADMIN</h5>
+                    {{ form_start(ff,{attr:{novalidate:'novalidate'}}) }}
+                    <label for="inputText" class="col-sm-4 col-form-label">Pool</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(ff.poules,{'attr':{'class':'form-control'}}) }}
+
+                    </div>
+                    {{ form_errors(ff.poules,{'attr':{'class':'text-danger'}}) }}
+
+
+
+                    <label for="inputText" class="col-sm-7 col-form-label">TeamA name</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(ff.nom_equipeA,{'attr':{'class':'form-control'}}) }}
+
+                    </div>
+                    {{ form_errors(ff.nom_equipeA,{'attr':{'class':'text-danger'}}) }}
+
+                    <label for="inputText" class="col-sm-7  col-form-label">TeamB name</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(ff.nom_equipeB,{'attr':{'class':'form-control'}}) }}
+                    </div>
+                    {{ form_errors(ff.nom_equipeB,{'attr':{'class':'text-danger'}}) }}
+
+                    <label for="inputText" class="col-sm-4 col-form-label">Match Date</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(ff.date_match,{'attr':{'class':'form-control'}}) }}
+                    </div>
+                    {{ form_errors(ff.date_match,{'attr':{'class':'text-danger'}}) }}
+
+                    <label for="inputText" class="col-sm-4 col-form-label">Location</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(ff.emplacement,{'attr':{'class':'form-control'}}) }}
+                    </div>
+                    {{ form_errors(ff.emplacement,{'attr':{'class':'text-danger'}}) }}
+
+
+
+
+
+
+                    <br/>
+                    <div class="col-sm-10" style="display: flex;align-items: center;justify-content: center">
+
+                        {{ form_widget(ff.Ajouter,{'attr':{'class':'btn btn-primary'}}) }}
+                    </div>
+
+                    {{ form_end(ff) }}
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}
