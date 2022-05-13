@@ -7,15 +7,21 @@ use App\Form\ModifierUserType;
 use App\Repository\UserRepository;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use phpDocumentor\Reflection\DocBlock\Serializer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class UserController extends AbstractController
 {
@@ -30,6 +36,7 @@ class UserController extends AbstractController
     public function update(UserRepository $repository, Request $request)
     {
         $user = $this->get('security.token_storage')->getToken()->getUser();
+        $picture=$user->getImage();
         $form = $this->createForm(ModifierUserType::class, $user);
         $form->handleRequest($request);
         $file = $form->get('image')->getData();
@@ -42,12 +49,10 @@ class UserController extends AbstractController
                     $fileName
                 );
 
-                // $user->setImage(new File($this->getParameter('brochures_directory').'/'.$user->getImage()));
-                    $user->setImage($fileName);
-
+                $user->setImage($fileName);
             }
-            else {
-                $user->setImage($user->getImage());
+            else{
+                $user->setImage($picture);
             }
             $em = $this->getDoctrine()->getManager();
             $em->flush();
@@ -92,7 +97,6 @@ class UserController extends AbstractController
      */
     public function listU(UserRepository $rep) :Response
     {
-
 
         // Configure Dompdf according to your needs
         $pdfOptions = new Options();
@@ -153,6 +157,7 @@ class UserController extends AbstractController
 
     }
 
+
     /**
      * @param Request $request
      * @param $id
@@ -180,29 +185,77 @@ class UserController extends AbstractController
      * @Route("/addUserJSON/new",name="adduserJSON")
      */
 
-    public function addUserJSON(Request $request,NormalizerInterface $normalizer)
+    public function addUserJSON(Request $request,NormalizerInterface $normalizer,UserPasswordEncoderInterface $passwordEncoder)
     {
         $em = $this->getDoctrine()->getManager();
+        $roles = 'ROLE_USER';
+        $passwd = $request->get('passw');
+        $email = $request->get('email');
+        if(!filter_var($email,FILTER_VALIDATE_EMAIL)){
+            return  new Response("email is not valid");
+        }
         $user = new User();
         $user->setNom($request->get('nom'));
         $user->setPrenom($request->get('prenom'));
         $user->setUsername($request->get('username'));
         $user->setDateNaissance(date_create_from_format("Y-m-d",$request->get("date_naissance")));
         $user->setSexe($request->get('sexe'));
-        $user->setEmail($request->get('email'));
-        $user->setPassw($request->get('passw'));
-        $user->setTel($request->get('tel'));
+        $user->setRoles(array($roles));
+        $user->setEmail($email);
+        $user->setPassw($passwordEncoder->encodePassword($user,$passwd));
+        $user->setTel($request->get('telephone'));
         $user->setAdresse($request->get('adresse'));
         $user->setImage($request->get('image'));
-        $user->setBanned($request->get('banned'));
-        $user->setGithubId($request->get('github_id'));
-        $em->persist($user);
-        $em->flush();
-        $jsoncontent = $normalizer->normalize($user,'json',['groups'=>'post:read']);
-        return New Response(json_encode($jsoncontent));
+        $user->setBanned(false);
+        $user->setGithubId('null');
+        try{
+            $em->persist($user);
+            $em->flush();
+           // $jsoncontent = $normalizer->normalize($user,'json',['groups'=>'post:read']);
+            return New Response("Account is created",200);
+        }catch (\Exception $ex){
+                return new Response("Exception",$ex->getMessage());
+         }
 
     }
 
+    /**
+     * @param Request $request
+     * @return JsonResponse|Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @Route("/user/login/{value}",name="userconnexion")
+     */
+
+    public function signinUser(Request $request)
+    {
+        $username = $request->query->get("username");
+        $passw = $request->query->get("passw");
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)->findOneBy(['username'=>$username]);
+
+        if($user){
+            if(password_verify($passw,$user->getPassword())){
+                $encoder = new JsonEncoder();
+                $normalizer = new ObjectNormalizer();
+                $normalizer->setCircularReferenceHandler(function ($object) {
+                    return $object->getIdUser();
+                });
+                $serializer = new \Symfony\Component\Serializer\Serializer([$normalizer], [$encoder]);
+                $formatted = $serializer->normalize($user);
+                return New JsonResponse(($formatted));
+            }
+            else{
+                return new Response("Password doesn't match");
+            }
+
+        }
+        else{
+            return new Response("User not found");
+        }
+
+
+    }
 
     /**
      * @param Request $request
@@ -212,22 +265,25 @@ class UserController extends AbstractController
      * @Route("/updateUserJSON/{id}",name="updateuserJSON")
      */
 
-    public function updateUserJSON(Request $request,NormalizerInterface $normalizer,$id)
+    public function updateUserJSON(Request $request,NormalizerInterface $normalizer,$id,UserPasswordEncoderInterface $passwordEncoder)
     {
         $em =  $this->getDoctrine()->getManager();
         $user= $em->getRepository(User::class)->find($id);
         $user->setNom($request->get('nom'));
         $user->setPrenom($request->get('prenom'));
         $user->setUsername($request->get('username'));
-        $user->setDateNaissance(date_create_from_format("Y-m-d",$request->get("date_naissance")));
+        $user->setDateNaissance(\DateTime::createFromFormat('Y-m-d', $request->query->get('date_naissance')));
         $user->setSexe($request->get('sexe'));
         $user->setEmail($request->get('email'));
-        $user->setPassw($request->get('passw'));
-        $user->setTel($request->get('tel'));
+        $user->setPassw($passwordEncoder->encodePassword($user,$request->get('passw')));
+        $user->setTel($request->get('telephone'));
         $user->setAdresse($request->get('adresse'));
-        $user->setImage($request->get('image'));
-        $user->setBanned($request->get('banned'));
-        $user->setGithubId($request->get('github_id'));
+        if($request->files->get("image")!=null){
+            $file = $request->files->get("image");
+            $filename= $file->getClientOriginalName();
+            $file->move($filename);
+            $user->setImage($filename);
+        }
         $em->flush();
         $jsoncontent = $normalizer->normalize($user,'json',['groups'=>'post:read']);
         return New Response(json_encode($jsoncontent));
@@ -256,8 +312,33 @@ class UserController extends AbstractController
     }
 
 
+    /**
+     * @param Request $request
+     * @return JsonResponse|Response|void
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @Route("/recherche",name="rechercheuser")
+     */
 
 
+    public function recherche(Request $request)
+    {
+        $username = $request->query->get("username");
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)->findBy(['username'=>$username]);
+        try{
+            if($user){
+                $serializer = new \Symfony\Component\Serializer\Serializer([new ObjectNormalizer()]);
+                $formatted  = $serializer->normalize($user);
+                return New JsonResponse(($formatted));
+            }
+
+        }catch(\Exception $ex){
+            return new Response("Exception",$ex->getMessage());
+     }
+
+
+
+    }
 
 
 

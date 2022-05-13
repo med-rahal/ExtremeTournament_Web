@@ -1,0 +1,87 @@
+{% extends 'baseback.html.twig' %}
+
+{% block body %}
+
+    <style>
+        .card {
+            background-color: #15172b;
+            border-radius: 20px;
+            box-sizing: border-box;
+
+
+            width: 320px;
+        }
+    </style>
+    <div class="row"  >
+        <div  style="display: flex;align-items: center;justify-content: center;margin-top: 200px; padding: 10px;">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-header" style="background-color: #2e383c">Add Product</h3>
+                    {{ form_start(form,{attr:{novalidate:'novalidate'}}) }}
+                    <label for="inputText" class="col-sm-4 col-form-label" style="color: #dfe0e1">nomProd</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(form.nomProd,{'attr':{'class':'form-control'}}) }}
+
+                    </div>
+                    {{ form_errors(form.nomProd,{'attr':{'class':'text-danger'}}) }}
+
+
+
+                    <label for="inputText" class="col-sm-4 col-form-label" style="color: #dfe0e1">prix</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(form.prix,{'attr':{'class':'form-control'}}) }}
+
+                    </div>
+                    {{ form_errors(form.prix,{'attr':{'class':'text-danger'}}) }}
+
+                    <label for="inputText" class="col-sm-4 col-form-label" style="color: #dfe0e1">totalEnStock</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(form.totalEnStock,{'attr':{'class':'form-control'}}) }}
+                    </div>
+                    {{ form_errors(form.totalEnStock,{'attr':{'class':'text-danger'}}) }}
+
+
+                    <label for="inputText" class="col-sm-4 col-form-label" style="color: #dfe0e1">descriptif</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(form.descriptif,{'attr':{'class':'form-control'}}) }}
+                    </div>
+                    {{ form_errors(form.descriptif,{'attr':{'class':'text-danger'}}) }}
+
+
+                    <label for="inputText" class="col-sm-4 col-form-label" style="color: #dfe0e1">categorieProd</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(form.categorieProd,{'attr':{'class':'form-control'}}) }}
+                    </div>
+                    {{ form_errors(form.categorieProd,{'attr':{'class':'text-danger'}}) }}
+
+
+
+                    <label for="inputText" class="col-sm-4 col-form-label" style="color: #dfe0e1">disponibilite</label>
+                    <div class="col-sm-10">
+                        {{ form_widget(form.disponibilite,{'attr':{'class':'form-control'}}) }}
+                    </div>
+                    {{ form_errors(form.disponibilite,{'attr':{'class':'text-danger'}}) }}
+
+
+
+
+
+
+
+                    <br/>
+                    <div class="button-a" style="display: flex;align-items: center;justify-content: center">
+
+                        <button type="submit" class="d-block default-button" ><span>Add</span></button>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+{% endblock %}

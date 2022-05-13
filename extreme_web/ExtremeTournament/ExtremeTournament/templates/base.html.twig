@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html>
-<head>
+
     <meta charset="UTF-8">
     <title>{% block title %}ExtremeTournament{% endblock %}</title>
     {# Run `composer require symfony/webpack-encore-bundle`
            and uncomment the following Encore helpers to start using Symfony UX #}
     {% block stylesheets %}
-
         <!-- All stylesheet and icons css  -->
         <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/animate.css') }}">
@@ -15,6 +13,8 @@
         <link rel="stylesheet" href="{{ asset('assets/css/lightcase.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/style.min.css') }}">
+        <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/fontawesome.min.css" rel="stylesheet">
+
 
     {% endblock %}
 
@@ -30,21 +30,28 @@
         <script src="{{ asset('assets/js/vendor/bootstrap.bundle.min.js') }}"></script>
         <script src="{{ asset('assets/js/plugins.js') }}"></script>
         <script src="{{ asset('assets/js/main.js') }}"></script>
-
+        <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
 
 
     {% endblock %}
-</head>
 
-<body>
+
+
 {% block header %}
+    <!-- ==========shape image Starts Here========== -->
+    <div class="body-shape">
+        <img src="{{ asset('assets/images/shape/body-shape.png') }}" alt="shape">
+    </div>
+    <!-- ==========shape image end Here========== -->
+
+
     <!-- ==========Header Section Starts Here========== -->
     <header class="header-section">
         <div class="container">
             <div class="header-holder d-flex flex-wrap justify-content-between align-items-center">
                 <div class="brand-logo d-none d-lg-inline-block">
                     <div class="logo">
-                        <a href="{{ path('app_home') }}">
+                        <a href="index.html">
                             <img src="{{ asset ('assets/images/logo/logo.png') }} "alt="logo">
                         </a>
                     </div>
@@ -59,26 +66,32 @@
                                 <li>
                                     <i class="icofont-location-pin"></i> Tunis - Ariana
                                 </li>
+
                             </ul>
-                          {{ app.user.username }} is connected
                             {% if is_granted('ROLE_ADMIN') %}
                                 <a class="btn btn-secondary" href="{{ path('app_admin')}}" class="login"><i class="icon-dashboard"></i> Dashboard</a>
                             {% endif %}
+                            {% if app.user !=null %}
+                                {{ app.user.username }} is connected
+                            {% endif %}
+
+
                         </div>
                     </div>
                     <div class="header-bottom">
-                        <center>
-                        <div class="header-wrapper" >
-                            <div class="mobile-logo d-lg-none" >
-                                <a href="{{ path('app_home') }}"><img src="{{ asset('assets/images/logo/logo.png') }}" alt="logo"></a>
+                        <div class="header-wrapper justify-content-lg-end">
+                            <div class="mobile-logo d-lg-none">
+                                <a href="index.html"><img src="{{ asset('assets/images/logo/logo.png') }}" alt="logo"></a>
                             </div>
-
                             <div class="menu-area">
                                 <ul class="menu">
                                     <li>
-                                        <a href="{{ path('app_home') }}" class="active">Home</a>
+                                        <a href="{{ path('pubtri') }}" class="active">Home</a>
+
+
 
                                     </li>
+
                                     <li>
                                         <a href="#0">Features</a>
                                         <ul class="submenu">
@@ -91,7 +104,11 @@
                                             </li>
                                             <li><a href="{{ path ('app_Partners') }}">partners</a></li>
                                             <li>
-                                                <a href="{{ path ('app_team')}}">teams</a>
+                                                <a href="{{ path ('listTeamfront')}}">My Team</a>
+
+                                            </li>
+                                            <li>
+                                                <a href="{{ path ('app_team')}}">View all teams</a>
 
                                             </li>
 
@@ -103,27 +120,18 @@
 
                                         </ul>
                                     </li>
-
+                                    <li><a href="{{ path ('add_reclamation') }}">RECLAMATION</a></li>
                                     <li>
-                                    <a href="#0">User</a>
-                                    <ul class="submenu">
-                                        <li><a href="{{ path ('add_reclamation') }}">RECLAMATION</a></li>
-                                        <li><a href="{{ path ('modify_user') }}">Profile</a></li>
-                                    </ul>
-                                    </li>
-                                    <li>
-                                        <a href="{{ path ('app_blog') }}">Blog</a>
+                                        <a href="{{ path ('listepubF') }}">Blog</a>
 
                                     </li>
                                     <li><a href="{{ path ('app_Contact') }}">Contact</a></li>
-                                 </ul>
+                                </ul>
                                 <a href="{{ path('modify_user') }}" class="login"><i class="icofont-users-alt-1"></i> <span>Profile</span></a>
                                 <a href="{{ path('security_logout') }}" class="signup"><i class="fa fa-sign-out"></i><span>Logout</span></a>
-
-
                                 <!-- toggle icons -->
                                 <div class="header-bar d-lg-none">
-                                    <span> </span>
+                                    <span></span>
                                     <span></span>
                                     <span></span>
                                 </div>
@@ -133,12 +141,12 @@
                             </div>
                         </div>
                     </div>
-                    </center>
                 </div>
             </div>
         </div>
 
     </header>
+    <!-- ==========Header Section Ends Here========== -->
 
 
 
@@ -156,6 +164,7 @@
 
 {% block footer %}
 
+    <!-- ================ footer Section start Here =============== -->
     <footer class="footer-section">
         <div class="footer-top">
             <div class="container">
@@ -192,21 +201,23 @@
                                 </div>
                                 <div class="lab-content">
                                     <span>Address : Tunis - Ariana</span>
+
                                 </div>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="footer-middle padding-top padding-bottom" style="background-image: url('assets/images/footer/bg.jpg');">
+        <div class="footer-middle padding-top padding-bottom" style="background-image: url({{ asset ('assets/images/footer/bg.jpg')}})">
             <div class="container">
                 <div class="row padding-lg-top">
                     <div class="col-lg-4 col-md-6 col-12">
                         <div class="footer-middle-item-wrapper">
                             <div class="footer-middle-item mb-lg-0">
                                 <div class="fm-item-title mb-4">
-                                    <img src="assets/images/logo/logo.png" alt="logo">
+                                    <img src="{{ asset('assets/images/logo/logo.png') }}" alt="logo">
                                 </div>
                                 <div class="fm-item-content">
                                     <p class="mb-4">Upropriate brand economca sound technolog after covalent technology enable prospective wastng markets whereas propriate and brand economca sound technolog</p>
@@ -231,7 +242,9 @@
             </div>
         </div>
     </footer>
+    <!-- ================ footer Section end Here =============== -->
+
 
 {% endblock %}
 
-</html>
+

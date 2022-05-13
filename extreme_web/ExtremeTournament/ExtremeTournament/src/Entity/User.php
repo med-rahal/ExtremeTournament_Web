@@ -405,32 +405,7 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    /**
-     * @return Collection<int, Commentaire>
-     */
-    public function getCommentaires(): Collection
-    {
-        return $this->commentaires;
-    }
 
-    public function addCommentaire(Commentaire $commentaire): self
-    {
-        if (!$this->commentaires->contains($commentaire)) {
-            $this->commentaires[] = $commentaire;
-            $commentaire->addIdUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCommentaire(Commentaire $commentaire): self
-    {
-        if ($this->commentaires->removeElement($commentaire)) {
-            $commentaire->removeIdUser($this);
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Commentaire>
@@ -586,6 +561,10 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
+    public function getPicture() :string
+    {
+        return (string) $this->image;
+    }
 }
 
 

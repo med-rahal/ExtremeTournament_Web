@@ -1,0 +1,104 @@
+{% extends 'baseback3.html.twig' %}
+
+
+{% block body %}
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w==" crossorigin="anonymous" referrerpolicy="no-referrer" >
+
+
+    <style>
+        h1 {
+            margin: auto;
+        }
+    </style>
+    <div class="container">
+
+        <h1 style="background-color: #7083b0">Stats for matchs</h1>
+        <canvas id="matchs" width="400" height="100"></canvas>
+
+
+        <canvas id="annonces"  width="400" height="100"></canvas>
+    </div>
+
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script>
+        function getRandomColor() { //generates random colours and puts them in string
+            var colors = [];
+            for (var i = 0; i < 3; i++) {
+                var letters = '0123456789ABCDEF'.split('');
+                var color = '#';
+                for (var x = 0; x < 6; x++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                colors.push(color);
+            }
+            return colors;
+        }
+    </script>
+<script>
+    const chartAreaBorder = {
+        id: 'chartAreaBorder',
+        beforeDraw(chart, args, options) {
+            const {ctx, chartArea: {left, top, width, height}} = chart;
+            ctx.save();
+            ctx.strokeStyle = options.borderColor;
+            ctx.lineWidth = options.borderWidth;
+            ctx.setLineDash(options.borderDash || []);
+            ctx.lineDashOffset = options.borderDashOffset;
+            ctx.strokeRect(left, top, width, height);
+            ctx.restore();
+        }
+    };
+</script>
+    <script>
+
+
+        let matchs = document.querySelector("#matchs")
+        let categGraph = new Chart(matchs, {
+            type: "pie",
+            data: {
+                labels: {{ matchEmp|raw }},
+                datasets: [{
+                    label: "Répartition des Matchs",
+                    data: {{ matchCount|raw  }},
+                    backgroundColor:getRandomColor(),
+
+                }]
+            }
+
+        })
+        let annonces = document.querySelector("#annonces")
+        let annGraph = new Chart(annonces, {
+            type: "line",
+            data: {
+                labels: {{ dates|raw }},
+                datasets: [{
+                    label: "Nombre des matchs par date",
+                    data: {{ annoncesCount|raw }}
+
+                }]
+            },
+
+            options: {
+
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true ,
+                            tension:0.4,
+                            backgroundColor:getRandomColor(),
+                        }
+
+                    }]
+                }
+            }
+        })
+    </script>
+
+
+{% endblock %}

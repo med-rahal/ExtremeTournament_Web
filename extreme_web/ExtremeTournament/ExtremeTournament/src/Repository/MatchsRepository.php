@@ -45,6 +45,25 @@ class MatchsRepository extends ServiceEntityRepository
         }
     }
 
+    public function countByDate()
+    {
+        $query = $this->createQueryBuilder('a')
+            ->select('SUBSTRING(a.date_match, 1, 10) as dateAnnonces, COUNT(a) as count')
+           ->groupBy('dateAnnonces') ;
+        return $query->getQuery()->getResult();
+
+    }
+
+    public function countBylocation()
+    {
+        $query = $this->createQueryBuilder('e')
+            ->select('COUNT(e.id_match) as count,e.emplacement as emp')
+            ->addGroupBy('emp');
+
+        return $query->getQuery()->getResult();
+
+    }
+
     // /**
     //  * @return Matchs[] Returns an array of Matchs objects
     //  */
@@ -74,3 +93,4 @@ class MatchsRepository extends ServiceEntityRepository
     }
     */
 }
+

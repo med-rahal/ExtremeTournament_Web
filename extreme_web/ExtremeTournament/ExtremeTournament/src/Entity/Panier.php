@@ -2,106 +2,59 @@
 
 namespace App\Entity;
 
-use App\Repository\PanierRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=PanierRepository::class)
+ * Panier
+ *
+ * @ORM\Table(name="panier", indexes={@ORM\Index(name="IDX_24CC0DF26B3CA4B", columns={"id_user"}), @ORM\Index(name="IDX_24CC0DF29C1263CD", columns={"ref_prod"})})
+ * @ORM\Entity
  */
 class Panier
 {
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id_panier", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id_panier;
+    private $idPanier;
 
     /**
-     * @ORM\ManyToOne(targetEntity=user::class, inversedBy="paniers")
-     * @ORM\JoinColumn(name="id_user",referencedColumnName="id_user",nullable=false)
-     */
-    private $id_user;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Produit::class, mappedBy="panier", orphanRemoval=true)
-     */
-    private $refProd;
-
-    /**
-     * @ORM\Column(type="integer")
+     * @var int
+     *
+     * @ORM\Column(name="quantite", type="integer", nullable=false)
      */
     private $quantite;
 
     /**
-     * @ORM\Column(type="float")
+     * @var float
+     *
+     * @ORM\Column(name="total_panier", type="float", precision=10, scale=0, nullable=false)
      */
     private $totalPanier;
 
-    public function __construct()
-    {
-        $this->refProd = new ArrayCollection();
-    }
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="ref_prod", type="integer", nullable=false)
+     */
+    private $refProd;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    /**
+     * @var \User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_user", referencedColumnName="id_user")
+     * })
+     */
+    private $idUser;
 
     public function getIdPanier(): ?int
     {
-        return $this->id_panier;
-    }
-
-    public function setIdPanier(int $id_panier): self
-    {
-        $this->id_panier = $id_panier;
-
-        return $this;
-    }
-
-    public function getIdUser(): ?user
-    {
-        return $this->id_user;
-    }
-
-    public function setIdUser(?user $id_user): self
-    {
-        $this->id_user = $id_user;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, produit>
-     */
-    public function getRefProd(): Collection
-    {
-        return $this->refProd;
-    }
-
-    public function addRefProd(produit $refProd): self
-    {
-        if (!$this->refProd->contains($refProd)) {
-            $this->refProd[] = $refProd;
-            $refProd->setPanier($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRefProd(produit $refProd): self
-    {
-        if ($this->refProd->removeElement($refProd)) {
-            // set the owning side to null (unless already changed)
-            if ($refProd->getPanier() === $this) {
-                $refProd->setPanier(null);
-            }
-        }
-
-        return $this;
+        return $this->idPanier;
     }
 
     public function getQuantite(): ?int
@@ -127,4 +80,30 @@ class Panier
 
         return $this;
     }
+
+    public function getRefProd(): ?int
+    {
+        return $this->refProd;
+    }
+
+    public function setRefProd(int $refProd): self
+    {
+        $this->refProd = $refProd;
+
+        return $this;
+    }
+
+    public function getIdUser(): ?User
+    {
+        return $this->idUser;
+    }
+
+    public function setIdUser(?User $idUser): self
+    {
+        $this->idUser = $idUser;
+
+        return $this;
+    }
+
+
 }

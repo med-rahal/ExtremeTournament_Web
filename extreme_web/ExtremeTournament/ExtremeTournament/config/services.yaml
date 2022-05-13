@@ -5,6 +5,8 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     brochures_directory: '%kernel.project_dir%/public/uploads'
+    equipes_directory: '%kernel.project_dir%/public/uploads/equipe'
+    produits_directory: '%kernel.project_dir%/public/uploads/produit'
 
 services:
     # default configuration for services in *this* file

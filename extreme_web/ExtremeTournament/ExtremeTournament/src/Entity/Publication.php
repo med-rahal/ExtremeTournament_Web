@@ -6,6 +6,9 @@ use App\Repository\PublicationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 /**
  * @ORM\Entity(repositoryClass=PublicationRepository::class)
@@ -16,42 +19,59 @@ class Publication
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("post:read")
      */
-    private $id_publication;
+    public $id_publication;
 
     /**
+     * @Assert\NotBlank(message="Titre doit etre non vide")
      * @ORM\Column(type="string", length=50)
+     * @Groups ("post:read")
      */
     private $titre;
 
     /**
+     *  @Assert\NotBlank(message=" Status doit etre non vide")
+     * @Assert\Length(
+     *      min = 5,
+     *      minMessage=" Entrer un titre au mini de 5 caracteres"
+     *
+     *     )
      * @ORM\Column(type="string", length=150)
+     * @Groups ("post:read")
      */
     private $status;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups ("post:read")
      */
-    private $dateCreation;
+    private $dateCreation ;
+
 
     /**
-     * @ORM\ManyToOne(targetEntity=user::class, inversedBy="publications")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="publications")
      * @ORM\JoinColumn(name="id_user",referencedColumnName="id_user",nullable=false)
+     * @Groups("post:read")
      */
     private $id_user;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Groups ("post:read")
      */
     private $image;
 
     /**
+     * @Assert\NotBlank(message=" titre doit etre non vide")
      * @ORM\OneToMany(targetEntity=Commentaire::class, mappedBy="id_publication")
+     * @Groups ("post:read")
      */
-    private $commentaires;
+    public $commentaires;
 
     /**
      * @ORM\OneToMany(targetEntity=Likess::class, mappedBy="id_publication", orphanRemoval=true)
+     * @Groups ("post:read")
      */
     private $likesses;
 
@@ -67,9 +87,9 @@ class Publication
         $this->forums = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getid_publication(): ?int
     {
-        return $this->id;
+        return $this->id_publication;
     }
 
     public function getTitre(): ?string
@@ -96,6 +116,7 @@ class Publication
         return $this;
     }
 
+
     public function getDateCreation(): ?\DateTimeInterface
     {
         return $this->dateCreation;
@@ -108,12 +129,12 @@ class Publication
         return $this;
     }
 
-    public function getIdUser(): ?user
+    public function getIdUser(): ?User
     {
         return $this->id_user;
     }
 
-    public function setIdUser(?user $id_user): self
+    public function setIdUser(? User $id_user): self
     {
         $this->id_user = $id_user;
 
@@ -131,7 +152,10 @@ class Publication
 
         return $this;
     }
-
+    public function __toString()
+    {
+        return (string)$this->id_publication;
+    }
     /**
      * @return Collection<int, Commentaire>
      */
@@ -159,17 +183,7 @@ class Publication
         return $this;
     }
 
-    public function getForum(): ?Forum
-    {
-        return $this->forum;
-    }
 
-    public function setForum(?Forum $forum): self
-    {
-        $this->forum = $forum;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Likess>

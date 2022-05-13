@@ -44,6 +44,21 @@ class CommentaireRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
+    public function findbyid_publication($id){
+
+        $entitymanager=$this->getEntityManager();
+        $query=$entitymanager->createQuery('select c FROM App\entity\Commentaire c WHERE c.id_publication=:id')
+            ->setParameter('id',$id);
+        return $query->getResult();
+    }
+
+    public function findbyid_comment($id){
+
+        $entitymanager=$this->getEntityManager();
+        $query=$entitymanager->createQuery('select c FROM App\entity\Commentaire c WHERE c.id_commentaire=:id')
+            ->setParameter('id',$id);
+        return $query->getResult();
+    }
 
     // /**
     //  * @return Commentaire[] Returns an array of Commentaire objects

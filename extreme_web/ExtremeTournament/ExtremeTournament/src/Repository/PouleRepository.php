@@ -44,6 +44,22 @@ class PouleRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
+    public function ListeTournoispoule()
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT p.nom_poule  as NomP  , T.nomT  as NomT 
+                  FROM  App\Entity\Poule p , App\Entity\Tournoi T
+                  WHERE T.id_t =p.id_t'
+            )
+
+            ->getResult();
+
+
+    }
+
+
+
 
     // /**
     //  * @return Poule[] Returns an array of Poule objects

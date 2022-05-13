@@ -67,7 +67,6 @@ class GithubAuthenticator extends SocialAuthenticator
         /** @var GithubResourceOwner $githubUser */
         $githubUser = $this->getClient()->fetchUserFromToken($credentials);
         return $this->userRepository->findFromGithubOauth($githubUser);
-        // On récupère l'email de l'utilisateur (spécifique à github)
         $response = HttpClient::create()->request('GET',
             'https://api.github.com/user/emails',
             [
@@ -76,6 +75,7 @@ class GithubAuthenticator extends SocialAuthenticator
                 ]
             ]
         );
+
         $emails = json_decode($response->getContent(), true);
         foreach($emails as $email) {
             if ($email['primary'] === true && $email['verified'] === true) {
@@ -83,8 +83,8 @@ class GithubAuthenticator extends SocialAuthenticator
                 $data['email'] = $email['email'];
                 $githubUser = new GithubResourceOwner($data);
             }
-        }
 
+        }
         if ($githubUser->getEmail() === null) {
             throw new BadMessageException();
         }
@@ -106,7 +106,7 @@ class GithubAuthenticator extends SocialAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
             $targetPath = $this->getTargetPath($request->getSession(), $providerKey);
-        return new RedirectResponse($targetPath ?: '/');
+        return new RedirectResponse($targetPath ?: '/home');
     }
 
     private function getClient (): \KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface

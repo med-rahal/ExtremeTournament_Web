@@ -27,7 +27,7 @@ class Commentaire
     /**
      * @ORM\Column(type="date")
      */
-    private $date_comment;
+    public $date_comment;
 
     /**
      * @ORM\ManyToOne(targetEntity=publication::class, inversedBy="commentaires")
@@ -50,12 +50,12 @@ class Commentaire
     public function __construct()
     {
         $this->id_publication = new ArrayCollection();
-        $this->id_user = new ArrayCollection();
+       // $this->id_user = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
-        return $this->id;
+        return $this->id_commentaire;
     }
 
     public function getText(): ?string
@@ -99,6 +99,13 @@ class Commentaire
         return $this;
     }
 
+    public function setidpublication(?Publication $id_publication): self
+    {
+        $this->id_publication = $id_publication;
+
+        return $this;
+    }
+
     public function removeIdPublication(publication $idPublication): self
     {
         $this->id_publication->removeElement($idPublication);
@@ -118,12 +125,12 @@ class Commentaire
         return $this;
     }
 
-    public function getIdUser(): ?int
+    public function getIdUser(): ? User
     {
         return $this->id_user;
     }
 
-    public function setIdUser(int $id_user): self
+    public function setIdUser(User $id_user): self
     {
         $this->id_user = $id_user;
 

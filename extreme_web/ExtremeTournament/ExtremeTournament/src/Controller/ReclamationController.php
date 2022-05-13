@@ -3,16 +3,21 @@
 namespace App\Controller;
 
 use App\Entity\Reclamation;
+use App\Entity\User;
 use App\Form\ReclamationType;
 use App\Form\UpdateRecType;
 use App\Repository\ReclamationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-
-
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 
 class ReclamationController extends AbstractController
@@ -130,6 +135,116 @@ class ReclamationController extends AbstractController
     public function sort(){
         $rec = $this->getDoctrine()->getRepository(Reclamation::class)->sortReclamations();
         return $this->render('dashboard/affichereclamation.html.twig',['reclamations'=>$rec]);
+    }
+
+
+    /**
+     * @param Request $request
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @Route("/Allreclamations",name="allrecs")
+     */
+
+
+    public function ALLReclamations(Request $request,NormalizerInterface $normalizer)
+    {
+        $repository = $this->getDoctrine()->getRepository(Reclamation::class);
+        $reclamations = $repository->findAll();
+        $jsoncontent = $normalizer->normalize($reclamations,'json',['groups'=>'post:read']);
+        return New Response(json_encode($jsoncontent));
+
+
+    }
+
+
+    /**
+     * @param Request $request
+     * @param NormalizerInterface $normalizer
+     * @return JsonResponse|Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @Route("/addreclamationJSON/new",name="addreclamationJSON")
+     */
+    public function addReclamationJSON(Request $request,NormalizerInterface $normalizer)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $reclamation = new reclamation();
+        $iduser=$request->query->get('id_user');
+        $reclamation->setDescriptionR($request->get('description_r'));
+        $reclamation->setType($request->get('type'));
+        $reclamation->setEtatR($request->get('etat_r'));
+        $reclamation->setEmail($request->get('email'));
+        $reclamation->setDateR(new \DateTime());
+        $reclamation->setIdUser($this->getDoctrine()->getManager()->getRepository(User::class)->find($iduser));
+        try{
+            $em->persist($reclamation);
+            $em->flush();
+             $jsoncontent = $normalizer->normalize($reclamation,'json',['groups'=>'post:read']);
+            return New JsonResponse($jsoncontent);
+        }catch (\Exception $ex){
+            return new Response("Exception",$ex->getMessage());
+        }
+
+
+    }
+
+    /**
+     * @param Request $request
+     * @param NormalizerInterface $normalizer
+     * @param $id
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+         * @Route("/updatereclamationJSON/{id}",name="updatereclamationJSON")
+     */
+
+    public function updateReclamationJSON(Request $request,NormalizerInterface $normalizer,$id)
+    {
+        $em =  $this->getDoctrine()->getManager();
+        $reclamation= $em->getRepository(Reclamation::class)->find($id);
+        $iduser=$request->query->get('id_user');
+        $reclamation->setDescriptionR($request->get('description_r'));
+        $reclamation->setType($request->get('type'));
+        $reclamation->setEtatR($request->get('etat_r'));
+        $reclamation->setEmail($request->get('email'));
+        $reclamation->setDateR( new \DateTime());
+        $reclamation->setIdUser($this->getDoctrine()->getManager()->getRepository(User::class)->find($iduser));
+        $em->flush();
+        $encoder = new JsonEncoder();
+        $normalizer = new ObjectNormalizer();
+        $normalizer->setCircularReferenceHandler(function ($object) {
+            return $object->getIdUser();
+        });
+        $serializer = new \Symfony\Component\Serializer\Serializer([$normalizer], [$encoder]);
+        $formatted = $serializer->normalize($reclamation);
+        return New Response(json_encode($formatted));
+
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     * @param NormalizerInterface $normalizer
+     * @return Response
+     * @throws \Symfony\Component\Serializer\Exception\ExceptionInterface
+     * @Route("/deleterecJSON/{id}",name="deleterecjson")
+     */
+
+    public function deleteReclamationJSON(Request $request,$id,NormalizerInterface $normalizer)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $reclamation = $em->getRepository(Reclamation::class)->find($id);
+        $em->remove($reclamation);
+        $em->flush();
+        $encoder = new JsonEncoder();
+        $normalizer = new ObjectNormalizer();
+        $normalizer->setCircularReferenceHandler(function ($object) {
+            return $object->getIdUser();
+        });
+        $serializer = new \Symfony\Component\Serializer\Serializer([$normalizer], [$encoder]);
+        $formatted = $serializer->normalize($reclamation);
+        return New Response(json_encode($formatted));
+
+
     }
 
 

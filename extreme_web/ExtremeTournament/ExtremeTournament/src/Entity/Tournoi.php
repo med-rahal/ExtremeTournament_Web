@@ -6,9 +6,15 @@ use App\Repository\TournoiRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
+
+
 
 /**
  * @ORM\Entity(repositoryClass=TournoiRepository::class)
+ * @UniqueEntity("nomT")
  */
 class Tournoi
 {
@@ -17,54 +23,63 @@ class Tournoi
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id_t;
+    public  $id_t;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     *
+     * @Groups ("post:read")
+     * @Assert\NotBlank(message="Name is required")
+     * @ORM\Column(type="string", length=255 , unique=true)
+     * @Assert\Regex(
+     *     pattern     = "/^[a-z]+$/i",
+     *     htmlPattern = "[a-zA-Z]+",
+     *      message = "Name should Contains only letters ")
+     * )
      */
-    private $nomT;
-
+    public $nomT;
     /**
-     * @ORM\Column(type="string", length=50)
+     * @Groups ("post:read")
+     * @Assert\NotBlank(message=" Name of Location is required")
+     *  @Assert\Regex(
+     *     pattern     = "/^[a-z]+$/i",
+     *     htmlPattern = "[a-zA-Z]+",
+     *      message = "Location  should Contains only letters ")
+     * )
+     * @ORM\Column(type="string", length=255)
      */
-    private $emplacementT;
+    public $emplacementT;
 
     /**
+     * @Groups ("post:read")
+     * 
+     *  @var string A "Y-m-d" formatted value
      * @ORM\Column(type="date")
      */
-    private $dateT;
+    public $dateT;
 
-    /**
+    /**@Assert\NotBlank(message="Number  Can't be null")
      * @ORM\Column(type="integer")
      */
-    private $id_user;
+    public $id_user;
 
     /**
-     * @ORM\OneToMany(targetEntity=Poule::class, mappedBy="idT", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Poule::class, mappedBy="id_t", orphanRemoval=true)
      */
     private $poules;
+
+
+
 
     public function __construct()
     {
         $this->poules = new ArrayCollection();
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getIdT(): ?int
     {
-        return $this->idT;
+        return $this->id_t;
     }
 
-    public function setIdT(int $idT): self
-    {
-        $this->idT = $idT;
-
-        return $this;
-    }
 
     public function getNomT(): ?string
     {
@@ -95,7 +110,7 @@ class Tournoi
         return $this->dateT;
     }
 
-    public function setDateT(\DateTimeInterface $dateT): self
+    public function setDateT(?\DateTimeInterface $dateT): self
     {
         $this->dateT = $dateT;
 
@@ -114,33 +129,25 @@ class Tournoi
         return $this;
     }
 
-    /**
-     * @return Collection<int, Poule>
-     */
-    public function getPoules(): Collection
+
+/*
+   public function __toString(): string
     {
-        return $this->poules;
+        // TODO: Implement __toString() method.
+        return $this->id_t;
     }
 
-    public function addPoule(Poule $poule): self
-    {
-        if (!$this->poules->contains($poule)) {
-            $this->poules[] = $poule;
-            $poule->setIdT($this);
-        }
+ */
 
-        return $this;
+    public function __toString()
+    {
+        return (string) $this->nomT;
     }
 
-    public function removePoule(Poule $poule): self
-    {
-        if ($this->poules->removeElement($poule)) {
-            // set the owning side to null (unless already changed)
-            if ($poule->getIdT() === $this) {
-                $poule->setIdT(null);
-            }
-        }
 
-        return $this;
-    }
+
+
+
+
+
 }

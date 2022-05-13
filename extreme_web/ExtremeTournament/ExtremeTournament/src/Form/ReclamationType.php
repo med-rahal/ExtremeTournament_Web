@@ -21,7 +21,7 @@ class ReclamationType extends AbstractType
             ))
             ->add('type',ChoiceType::class,array(
                     'choices'  => array(
-                    'Contenu inapproprié'   => 'Mauvais Service',
+                    'Contenu inapproprié'   => 'Contenu inapproprié',
                     'Fonctionnalité du site ' => 'Fonctionnalite du site',
                     'Retards et Changements'  => 'Retards et Changements',
                     )

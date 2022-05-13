@@ -26,15 +26,21 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class SecurityController extends AbstractController
 {
     /**
+     * @param AuthenticationUtils $authenticationUtils
+     * @param Request $request
+     * @return Response|void
      * @Route("/login", name="login_security")
      */
     public function login(AuthenticationUtils $authenticationUtils, Request $request)
     {
 
-        $error = $authenticationUtils->getLastAuthenticationError();
-        $lastUsername = $authenticationUtils->getLastUsername();
-        return $this->render('security/login.html.twig',
-            ['lastUsername' => $lastUsername, 'error' => $error]);
+            $error = $authenticationUtils->getLastAuthenticationError();
+            $lastUsername = $authenticationUtils->getLastUsername();
+            return $this->render('security/login.html.twig',
+                ['lastUsername' => $lastUsername, 'error' => $error]);
+
+
+
     }
 
     /**
@@ -185,6 +191,7 @@ class SecurityController extends AbstractController
         }
 
     }
+
 
 
 }

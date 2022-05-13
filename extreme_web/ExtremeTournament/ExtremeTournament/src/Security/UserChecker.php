@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class UserChecker implements UserCheckerInterface
 {
 
-   // private $bansChecker;
+
 
     public function checkPreAuth(UserInterface $user)
     {

@@ -40,7 +40,7 @@ class UserType extends AbstractType
                 'label' => 'Rôles'
             ])
             ->add('email')
-            ->add('passw')
+            ->add('passw',PasswordType::class)
             ->add('tel')
             ->add('adresse')
             ->add('image',FileType::class);

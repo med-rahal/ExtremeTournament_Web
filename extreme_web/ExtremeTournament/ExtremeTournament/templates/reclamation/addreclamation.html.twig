@@ -21,38 +21,27 @@
     <div class="body-shape">
         <img src="assets/images/shape/body-shape.png" alt="shape">
     </div>
-    <!-- ==========shape image end Here========== -->
-
-
-
-
-    <!-- ==========Header Section Starts Here========== -->
-
 
 
     <!-- ===========Banner Section start Here========== -->
     <section class="pageheader-section" style="background-image: url(assets/images/pageheader/bg.jpg);">
         <div class="container">
             <div class="section-wrapper text-center text-uppercase">
-                <h2 class="pageheader-title">Registration Page</h2>
+                <h2 class="pageheader-title">Complaint Page</h2>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb justify-content-center mb-0">
-                        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Registration</li>
+                        <li class="breadcrumb-item"><a href="{{ path('app_home') }}">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Complaint</li>
                     </ol>
                 </nav>
             </div>
         </div>
     </section>
-    <!-- ===========Banner Section Ends Here========== -->
 
-
-
-    <!-- Login Section Section Starts Here -->
     <div class="login-section padding-top padding-bottom">
         <div class=" container">
             <div class="account-wrapper">
-                <h3 class="title">Add Reclamation</h3>
+                <h3 class="title">Add Complaint</h3>
                 {{ form_start(formR,{'attr': {'novalidate': 'novalidate'}}) }}
                 <form class="account-form">
                     <div class="form-group">
@@ -65,7 +54,6 @@
                         {{ form_widget(formR.type , {'attr': {'class': '' , 'placeholder' : 'Type'}} ) }}
                         {{ form_errors(formR.type)}}
                     </div>
-
 
                     <div class="form-group">
                         {{ form_widget(formR) }}

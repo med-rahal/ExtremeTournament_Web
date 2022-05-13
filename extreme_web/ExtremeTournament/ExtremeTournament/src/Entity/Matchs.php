@@ -40,8 +40,8 @@ class Matchs
     private $emplacement;
 
     /**
-     * @ORM\ManyToOne(targetEntity=poule::class, inversedBy="matchs")
-     * @ORM\JoinColumn(name="nom_poule",referencedColumnName="nom_poule",nullable=false)
+     * @ORM\ManyToOne(targetEntity=Poule::class, inversedBy="matchs")
+     * @ORM\JoinColumn(name="poule",referencedColumnName="nom_poule",nullable=false)
      */
     private $poules;
 
@@ -51,18 +51,22 @@ class Matchs
     private $equipes;
 
 
-
+    public function __toString()
+    {
+        return (string) $this->id_match;
+    }
 
     public function __construct()
     {
         $this->matchs = new ArrayCollection();
         $this->equipes = new ArrayCollection();
     }
-
+/*
     public function getId(): ?int
     {
         return $this->id;
     }
+*/
 
     public function getIdMatch(): ?int
     {

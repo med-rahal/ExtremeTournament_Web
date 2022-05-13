@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<div>
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
@@ -73,13 +73,13 @@
         </div>
     </div>
 
-    <div id="page-container" class="sidebar-partial sidebar-visible-lg sidebar-no-animations">
+    <div id="page-container" class="sidebar-partial sidebar-visible-lg sidebar-no-animations" style="background-color: #eaedf1">
         <!-- Main Sidebar -->
         <div id="sidebar">
             <!-- Wrapper for scrolling functionality -->
             <div id="sidebar-scroll">
                 <!-- Sidebar Content -->
-                <div class="sidebar-content">
+                <div class="sidebar-content" style="margin:auto">
                     <!-- Brand -->
                     <a href="{{ path('app_admin') }}" class="sidebar-brand">
                         <i class="gi gi-flash"></i><span class="sidebar-nav-mini-hide"><strong>Extreme</strong></span>
@@ -89,8 +89,8 @@
                     <!-- User Info -->
                     <div class="sidebar-section sidebar-user clearfix sidebar-nav-mini-hide">
                         <div class="sidebar-user-avatar">
-                            <a href="page_ready_user_profile.html">
-                                <img src="{{ asset('assets/img/placeholders/avatars/avatar2.jpg') }}" alt="avatar">
+                            <a href="">
+                                <img src="{{ asset('uploads/' ~ app.user.image)}}" style="width:68px" style="height: 70px" class="img-rounded"/></td>
                             </a>
                         </div>
                         <div class="sidebar-user-name"><br>
@@ -132,11 +132,11 @@
                             <span class="sidebar-header-title">Gestion des Tournois</span>
                         </li>
                         <li>
-                            <a href="{{ path ('app_gameback') }} "><i class=" sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-trophy sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Tournois </span></a>
+                            <a href="{{ path ('appgameback') }} "><i class=" sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-trophy sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Tournois </span></a>
 
                         </li>
                         <li>
-                            <a href="{{ path ('app_matchback') }}" ><i class="sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-meetup sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Matchs</span></a>
+                            <a href="{{ path ('listMatchBack') }}" ><i class="sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-meetup sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Matchs</span></a>
                         </li>
 
 
@@ -146,7 +146,7 @@
                             <span class="sidebar-header-title">Gestion des equipes</span>
                         </li>
                         <li>
-                            <a href="{{ path ('app_teamback') }}" class="sidebar-nav-menu"><i class="sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-users  sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Equipes</span></a>
+                            <a href="{{ path ('listTeamBack') }}" class="sidebar-nav-menu"><i class="sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-users  sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Equipes</span></a>
 
                         </li>
 
@@ -162,10 +162,37 @@
                         </li>
                         <li>
 
-                            <a href="{{ path('app_shopback') }}"><i class="sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-product-hunt     sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Produits</span></a>
+                            <a href="{{ path('produit_list_Back') }}"><i class="sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-product-hunt     sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Produits</span></a>
 
 
 
+                        </li>
+                        <li class="sidebar-header">
+                            <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Quick Settings"><i class="gi gi-settings"></i></a></span>
+                            <span class="sidebar-header-title">Gestion de Forum</span>
+                        </li>
+                        <li>
+
+                            <a href="{{ path('listepub') }}"><i class="sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-product-hunt     sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Forum</span></a>
+
+
+
+                        </li>
+                        <li class="sidebar-header">
+                            <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Quick Settings"><i class="gi gi-settings"></i></a></span>
+                            <span class="sidebar-header-title"></span>
+                        </li>
+                        <li class="sidebar-header">
+                                <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Quick Settings"><i class="gi gi-settings"></i></a></span>
+                                <span class="sidebar-header-title"></span>
+                        </li>
+                        <li class="sidebar-header">
+                            <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Quick Settings"><i class="gi gi-settings"></i></a></span>
+                            <span class="sidebar-header-title"></span>
+                        </li>
+                        <li class="sidebar-header">
+                            <span class="sidebar-header-options clearfix"><a href="javascript:void(0)" data-toggle="tooltip" title="Quick Settings"><i class="gi gi-settings"></i></a></span>
+                            <span class="sidebar-header-title"></span>
                         </li>
 
                         </li>
@@ -185,13 +212,10 @@
             <!-- In the PHP version you can set the following options from inc/config file -->
             <!--
                 Available header.navbar classes:
-
                 'navbar-default'            for the default light header
                 'navbar-inverse'            for an alternative dark header
-
                 'navbar-fixed-top'          for a top fixed header (fixed sidebars with scroll will be auto initialized, functionality can be found in js/app.js - handleSidebar())
                     'header-fixed-top'      has to be added on #page-container only if the class 'navbar-fixed-top' was added
-
                 'navbar-fixed-bottom'       for a bottom fixed header (fixed sidebars with scroll will be auto initialized, functionality can be found in js/app.js - handleSidebar()))
                     'header-fixed-bottom'   has to be added on #page-container only if the class 'navbar-fixed-bottom' was added
             -->
@@ -303,13 +327,16 @@
                                     <small>Yesterday</small><br>
                                     <i class="fa fa-bug fa-fw"></i> <a href="javascript:void(0)" class="alert-link">New bug submitted</a>
                                 </div>
+
                             </li>
                         </ul>
                     </li>
                     <!-- END User Dropdown -->
                 </ul>
+
                 <!-- END Right Header Navigation -->
             </header>
+
             <!-- END Header -->
 
             {% endblock %}
@@ -322,7 +349,7 @@
 
             {% block footer%}
             <!-- Footer -->
-            <footer class="clearfix">
+            <footer class="clearfix" style="margin-top: 350px;background-color:#eaedf1">
                 <div class="pull-right">
                     Crafted with <i class="fa fa-heart text-danger"></i> by <a href="https://1.envato.market/ydb" target="_blank">RuntimeTerror</a>
                 </div>
@@ -330,11 +357,11 @@
                     <span>2022 </span> <a href="https://www.facebook.com/Extreme-Tournament-112193534708077" target="_blank">ExtremeTournament</a>
                 </div>
             </footer>
+
+    <!-- END Footer -->
+
         </div>
     </div>
 </div>
-    <!-- END Footer -->
-
 {% endblock %}
-</body>
 </html>

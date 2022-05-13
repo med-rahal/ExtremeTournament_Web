@@ -2,74 +2,91 @@
 
 namespace App\Entity;
 
-use App\Repository\ProduitRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=ProduitRepository::class)
+ * Produit
+ *
+ * @ORM\Table(name="produit")
+ * @ORM\Entity
  */
 class Produit
 {
     /**
+     * @var int
+     *
+     * @ORM\Column(name="ref_prod", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $refProd;
+   public $refProd;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @var string
+     * @Assert\NotBlank
+     * @ORM\Column(name="nom_prod", type="string", length=50, nullable=false)
      */
     private $nomProd;
 
     /**
-     * @ORM\Column(type="float")
+     * @var float
+     *@Assert\Positive
+     * @ORM\Column(name="prix", type="float", precision=10, scale=0, nullable=false)
      */
     private $prix;
 
     /**
-     * @ORM\Column(type="integer")
+     * @var int
+     * @Assert\PositiveOrZero
+     * @ORM\Column(name="total_en_stock", type="integer", nullable=false)
      */
-    private $TotalEnStock;
+    private $totalEnStock;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @var string
+     * @Assert\NotBlank
+     * @ORM\Column(name="descriptif", type="string", length=100, nullable=false)
      */
-    private $Descriptif;
+    private $descriptif;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @var string
+     * @Assert\NotBlank
+     * @ORM\Column(name="categorie_prod", type="string", length=50, nullable=false)
      */
-    private $CategorieProd;
+    private $categorieProd;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @var string
+     * @Assert\Length(
+     *      min = 1
+     *     )
+     * @ORM\Column(name="disponibilite", type="string", length=50, nullable=false)
      */
     private $disponibilite;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Panier::class, inversedBy="refProd")
-     * @ORM\JoinColumn(name="id_panier",referencedColumnName="id_panier",nullable=false)
+     * @var string
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *      min = 1,
+     *     )
+     * @ORM\Column(name="image", type="string", length=50, nullable=false)
      */
-    private $panier;
-
+    private $image;
 
     public function getRefProd(): ?int
     {
         return $this->refProd;
     }
 
-    public function setRefProd(int $refProd): self
-    {
-        $this->refProd = $refProd;
-
-        return $this;
-    }
-
     public function getNomProd(): ?string
     {
         return $this->nomProd;
     }
+
+
 
     public function setNomProd(string $nomProd): self
     {
@@ -92,36 +109,36 @@ class Produit
 
     public function getTotalEnStock(): ?int
     {
-        return $this->TotalEnStock;
+        return $this->totalEnStock;
     }
 
-    public function setTotalEnStock(int $TotalEnStock): self
+    public function setTotalEnStock(int $totalEnStock): self
     {
-        $this->TotalEnStock = $TotalEnStock;
+        $this->totalEnStock = $totalEnStock;
 
         return $this;
     }
 
     public function getDescriptif(): ?string
     {
-        return $this->Descriptif;
+        return $this->descriptif;
     }
 
-    public function setDescriptif(string $Descriptif): self
+    public function setDescriptif(string $descriptif): self
     {
-        $this->Descriptif = $Descriptif;
+        $this->descriptif = $descriptif;
 
         return $this;
     }
 
     public function getCategorieProd(): ?string
     {
-        return $this->CategorieProd;
+        return $this->categorieProd;
     }
 
-    public function setCategorieProd(string $CategorieProd): self
+    public function setCategorieProd(string $categorieProd): self
     {
-        $this->CategorieProd = $CategorieProd;
+        $this->categorieProd = $categorieProd;
 
         return $this;
     }
@@ -138,15 +155,17 @@ class Produit
         return $this;
     }
 
-    public function getPanier(): ?Panier
+    public function getImage(): ?string
     {
-        return $this->panier;
+        return $this->image;
     }
 
-    public function setPanier(?Panier $panier): self
+    public function setImage(string $image): self
     {
-        $this->panier = $panier;
+        $this->image = $image;
 
         return $this;
     }
+
+
 }

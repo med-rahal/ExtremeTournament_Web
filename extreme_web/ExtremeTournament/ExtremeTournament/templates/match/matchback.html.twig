@@ -1,1 +1,50 @@
-{% extends 'baseback.html.twig' %}
+{% extends 'baseback3.html.twig' %}
+{% block body %}
+<table id="example" class="table table-striped table-bordered" style="background-color: #dfe0e1" >
+
+    <thead>
+    <div>
+    <a style="background-color: #0be881" class="btn btn-danger" href="{{ path('addmatch')}}">Add Match</a>
+    <a style="background-color: #9c3428" class="btn btn-light" href="{{ path('stats')}}">View maths stats</a>
+    <a style="background-color: #9c3428" class="btn btn-danger" href="{{ path('listCalendar')}}">Calendar</a>
+    </div>
+    <tr>
+        <th class="wd-5p">Pool name </th>
+        <th class="wd-5p">Team A  </th>
+        <th class="wd-5p">Team B  </th>
+        <th class="wd-5p">Match Date </th>
+        <th class="wd-5p">Location </th>
+
+
+    </tr>
+
+    </thead>
+
+
+    <tbody>
+
+    {% for i in matchs %}
+        <tr>
+            <td>{{ i.poules}}</td>
+            <td>{{i.getNomEquipeA()}}</td>
+            <td>{{i.getNomEquipeB()}}</td>
+            <td>{{i.getDateMatch() | date('m/d/y') }}</td>
+            <td>{{i.emplacement}}</td>
+
+           <td>
+               <a class="btn btn-danger" href="{{ path('deleteMatch',{'id':i.getIdMatch})}}">delete</a>
+               <a style="background-color: #e6db74" class="btn btn-danger" href="{{ path('Updatematch',{'id':i.getIdMatch})}}">update</a>
+           </td>
+
+
+
+
+
+        </tr>
+    {% endfor %}
+    </tbody>
+
+
+
+</table>
+{% endblock %}

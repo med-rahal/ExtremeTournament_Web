@@ -1,9 +1,18 @@
 {
+    "bacon/bacon-qr-code": {
+        "version": "2.0.7"
+    },
     "captcha-com/captcha": {
         "version": "4.2.5"
     },
     "captcha-com/symfony-captcha-bundle": {
         "version": "4.2.12"
+    },
+    "cmen/google-charts-bundle": {
+        "version": "5.0.0"
+    },
+    "dasprid/enum": {
+        "version": "1.0.3"
     },
     "doctrine/annotations": {
         "version": "1.13",
@@ -91,6 +100,15 @@
     "egulias/email-validator": {
         "version": "3.1.2"
     },
+    "endroid/installer": {
+        "version": "1.4.0"
+    },
+    "endroid/qr-code": {
+        "version": "4.4.9"
+    },
+    "endroid/qr-code-bundle": {
+        "version": "4.0.7"
+    },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.7"
     },
@@ -102,6 +120,24 @@
     },
     "guzzlehttp/psr7": {
         "version": "2.2.1"
+    },
+    "knplabs/knp-components": {
+        "version": "v3.4.0"
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v5.8.0"
+    },
+    "knplabs/knp-snappy": {
+        "version": "v1.4.1"
+    },
+    "knplabs/knp-snappy-bundle": {
+        "version": "1.9",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.5",
+            "ref": "c81bdcf4a9d4e7b1959071457f9608631865d381"
+        }
     },
     "knpuniversity/oauth2-client-bundle": {
         "version": "2.10",
@@ -123,6 +159,9 @@
     },
     "league/oauth2-github": {
         "version": "3.0.0"
+    },
+    "mercuryseries/flashy-bundle": {
+        "version": "v3.0.0"
     },
     "monolog/monolog": {
         "version": "1.27.0"
@@ -391,6 +430,15 @@
             "./src/Kernel.php"
         ]
     },
+    "symfony/google-mailer": {
+        "version": "4.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "4.4",
+            "ref": "f8fd4ddb9b477510f8f4bce2b9c054ab428c0120"
+        }
+    },
     "symfony/http-client": {
         "version": "v4.4.40"
     },
@@ -646,6 +694,15 @@
     },
     "symfony/yaml": {
         "version": "v4.4.37"
+    },
+    "tattali/calendar-bundle": {
+        "version": "1.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "1.1",
+            "ref": "0c643e17b5340747b35c2c75e11727fa31bfa9bb"
+        }
     },
     "theseer/tokenizer": {
         "version": "1.2.1"

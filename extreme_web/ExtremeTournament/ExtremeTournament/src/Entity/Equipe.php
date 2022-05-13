@@ -1,11 +1,14 @@
 <?php
 
 namespace App\Entity;
-
 use App\Repository\EquipeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Integer;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=EquipeRepository::class)
@@ -13,8 +16,13 @@ use Doctrine\ORM\Mapping as ORM;
 class Equipe
 {
     /**
+     * @Assert\NotBlank(message=" Team Name can't be null")
+     * @Assert\Length(
+     *      min = 5,
+     *      minMessage=" Enter a team with a minimum of 5 characters"
+     *
+     *     )
      * @ORM\Id
-     * @ORM\GeneratedValue
      *  @ORM\Column(type="string", length=50)
      */
     private $nom_equipe;
@@ -24,6 +32,12 @@ class Equipe
     private $id_user;
 
     /**
+     * @Assert\NotBlank(message="Participants  can't be null")
+     * @Assert\Range(
+     *      min = 1,
+     *      max = 20,
+     *      notInRangeMessage = "You must enter value between {{ min }} and {{ max }}"
+     * )
      * @ORM\Column(type="integer")
      */
     private $nb_participants;
@@ -39,20 +53,34 @@ class Equipe
     private $categorie;
 
     /**
+     * @Assert\Regex(
+     *    pattern     = "/^[a-zA-Z0-9]+$/i",
+     *    htmlPattern = "^[a-zA-Z0-9]+$"
+     * )
      * @ORM\Column(type="string", length=255)
      */
     private $Epass;
 
     /**
-     * @ORM\ManyToOne(targetEntity=matchs::class, inversedBy="equipes")
+     * @ORM\ManyToOne(targetEntity=Matchs::class, inversedBy="equipes")
      * @ORM\JoinColumn(name="id_match",referencedColumnName="id_match",nullable=false)
      */
     private $matches;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Membre::class, mappedBy="equipes", orphanRemoval=true)
+     */
+    private $membres;
+
+    public function __toString()
+    {
+        return (string) $this->nom_equipe;
+    }
 
     public function __construct()
     {
         $this->equipes = new ArrayCollection();
+        $this->membres = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -170,6 +198,36 @@ class Equipe
     public function setMatches(?matchs $matches): self
     {
         $this->matches = $matches;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Membre>
+     */
+    public function getMembres(): Collection
+    {
+        return $this->membres;
+    }
+
+    public function addMembre(Membre $membre): self
+    {
+        if (!$this->membres->contains($membre)) {
+            $this->membres[] = $membre;
+            $membre->setEquipes($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMembre(Membre $membre): self
+    {
+        if ($this->membres->removeElement($membre)) {
+            // set the owning side to null (unless already changed)
+            if ($membre->getEquipes() === $this) {
+                $membre->setEquipes(null);
+            }
+        }
 
         return $this;
     }

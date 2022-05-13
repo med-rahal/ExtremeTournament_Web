@@ -1,1 +1,78 @@
 {% extends 'baseback.html.twig' %}
+{% block body %}
+<body>
+
+<h1 style="margin-left: 20px;margin-bottom: -20px;margin-top: 20px;color: black">All Products  </h1>
+<div style="margin-left: 500px;margin-bottom: 10px">
+    <img class="" height="25px" width="25px" src="{{ asset('assets/images/logo/rechercheicon.png' ) }}">
+    <input type="text" id="myInput" placeholder="Product Name">
+    <br><br>
+</div>
+
+
+
+<table  class="table table-dark"  id="myTable">
+    <tr>
+        <th>Image</th>
+        <th>Nom</th>
+        <th>Description</th>
+        <th>Categorie</th>
+        <th>Stock</th>
+        <th>Prix</th>
+        <th>Disponibilite</th>
+        <th>Action</th>
+
+
+    </tr>
+    {% for p in produitlist %}
+    <tbody id="myTable">
+        <tr class="header">
+
+            <td>
+                <img src="{{ asset("/uploads/produit/#{p.getImage()}") }}" width="50px" height="50px" >
+            </td>
+            <td>
+                {{p.nomProd}}
+            </td>
+            <td>
+                {{ p.Descriptif }}
+            </td>
+<td> {{p.categorieProd}}</td>
+
+            <td>
+                {{ p.totalEnStock}}
+            </td>
+
+            <td>
+                {{p.prix}}
+            </td>
+            <td>
+                {{p.disponibilite}}
+            </td>
+            <td><a href="{{ path('delp',{'idp':p.refProd}) }}"> <button type="button" class="btn btn-danger" style="font-size: 8px">Delete</button></a>
+       <a href="{{ path('modp',{'idp': p.refProd}) }}"> <button type="button" class="btn btn-warning" style="font-size: 8px" >Modifier</button></a>
+            </td>
+        </tr>
+    {%endfor%}
+</table>
+
+<div>
+    <a href="{{ path('produitpdf')}}" style="margin-left: 700px"> <button type="button" class="btn btn-outline-primary" style="font-size: 10px" >Enregistrer Liste </button></a>
+    <a href="{{ path('add_form')}}" style="margin-left: 700px"> <button type="button" class="btn btn-outline-primary" style="font-size: 10px" >Ajouter</button></a>
+
+</div>
+
+<!-- search -->
+<script src="{{ asset('https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js') }}"></script>
+<script>
+    $(document).ready(function(){
+        $("#myInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
+
+{% endblock %}

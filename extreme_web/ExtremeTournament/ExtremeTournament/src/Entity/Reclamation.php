@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ReclamationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Entity(repositoryClass=ReclamationRepository::class)
  */
@@ -14,6 +15,7 @@ class Reclamation
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups("post:read")
      */
     private $id_reclam;
     /**
@@ -24,16 +26,19 @@ class Reclamation
      *     message="This field cannot contain a number"
      * )
      * @Assert\NotNull(message="This value can not be null")
+     * @Groups("post:read")
      */
     private $descriptionR;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Groups("post:read")
      */
     private $type;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Groups("post:read")
      */
     private $etatR;
 
@@ -42,26 +47,24 @@ class Reclamation
      * @Assert\Email(
      *    message = "The email '{{ value }}' is not a valid email."
      * )
-     *
+     * @Groups("post:read")
      */
     private $email;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("post:read")
      */
     private $dateR;
 
     /**
      * @ORM\ManyToOne(targetEntity=user::class, inversedBy="reclamations")
      * @ORM\JoinColumn(name="id_user",referencedColumnName="id_user",nullable=false)
+     * @Groups("post:read")
      */
     private $id_user;
 
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getIdReclam(): ?int
     {

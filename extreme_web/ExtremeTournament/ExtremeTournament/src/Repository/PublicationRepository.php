@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Commentaire;
 use App\Entity\Publication;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
@@ -32,6 +33,69 @@ class PublicationRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
+
+    public function nbrcommentparid()
+    {
+        /*
+
+
+                $query=$entitymanager->createQuery(' SELECT p
+            FROM App\Entity\Publication p
+            JOIN p.commentaires c
+
+        ');
+        return $query->getResult();
+        */
+        $em = $this->getEntityManager();
+
+        $query = $em->createQuery('SELECT  count(p) FROM App\Entity\Publication p WHERE p.id_publication=:id' );
+        return $query->setMaxResults(3)->getResult();
+
+
+    }
+    public function triparcomment(){
+
+        $em=$this->getEntityManager();
+
+        $query = $em->createQuery('SELECT  p FROM App\Entity\Publication p  LEFT JOIN  p.commentaires c GROUP BY p.id_publication ORDER BY count(c.id_publication) desc  ');
+        return $query->setMaxResults(3)->getResult();
+    }
+    public function nbrparcomment(){
+        /*
+
+
+                $query=$entitymanager->createQuery(' SELECT p
+            FROM App\Entity\Publication p
+            JOIN p.commentaires c
+
+        ');
+        return $query->getResult();
+        */
+        $em=$this->getEntityManager();
+
+        $query = $em->createQuery('SELECT count (p) FROM App\Entity\Publication p  LEFT JOIN  p.commentaires c GROUP BY p.id_publication ORDER BY count(c.id_publication) desc  ');
+        return $query->setMaxResults(3)->getScalarResult();
+    }
+
+    public function findPublicationByTitle(string $query)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->where(
+                $qb->expr()->andX(
+                    $qb->expr()->orX(
+                        $qb->expr()->like('p.titre', ':query')
+                    )
+                )
+            )
+            ->setParameter('query', '%' . $query . '%')
+        ;
+        return $qb
+            ->getQuery()
+            ->getResult();
+    }
+
+
 
     /**
      * @throws ORMException

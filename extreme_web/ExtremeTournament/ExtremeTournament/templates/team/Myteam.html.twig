@@ -1,0 +1,117 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+
+
+    <!-- preloader start here -->
+    <div class="preloader">
+        <div class="preloader-inner">
+            <div class="preloader-icon">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <!-- preloader ending here -->
+
+    <!-- scrollToTop start here -->
+    <a href="#" class="scrollToTop"><i class="icofont-rounded-up"></i></a>
+    <!-- scrollToTop ending here -->
+
+    <!-- ==========shape image Starts Here========== -->
+    <div class="body-shape">
+        <img src="{{ asset('assets/images/shape/body-shape.png') }}" alt="shape">
+    </div>
+    <!-- ==========shape image end Here========== -->
+
+
+
+
+
+
+    <!-- ===========Banner Section start Here========== -->
+    {% for e in equipe %}
+    <section class="pageheader-section" style="background-image: url({{ asset('assets/images/pageheader/bg.jpg') }}">
+        <div class="container">
+            <div class="section-wrapper text-center text-uppercase">
+                <div class="pageheader-thumb mb-4">
+
+                    <img src="{{ asset("/uploads/equipe/#{e.getImage()}") }}" width="300px" height="300px" >
+                </div>
+                <h2 class="pageheader-title">{{ e.getNomEquipe }} </h2>
+            </div>
+        </div>
+    </section>
+    <!-- ===========Banner Section Ends Here========== -->
+
+    <div class="about-team padding-top padding-bottom">
+        <div class="container">
+            <div class="section-header">
+                <p>Welcome</p>
+                <h2 class="mb-3">ABOUT My TEAM</h2>
+                <p class="desc">Team Password</p><h5>{{ e.getEpass }}</h5>
+            </div>
+            <ul class="d-flex flex-wrap justify-content-center player-meta mb-0">
+                <li class="d-flex align-items-center">
+                    <span class="left me-3"><i class="icofont-medal"></i></span>
+                    <span class="right"> 15 WINS </span>
+                </li>
+                <li class="d-flex align-items-center">
+                    <span class="left me-3"><i class="icofont-signal"></i></span>
+                    <span class="right">04 LOSES</span>
+                </li>
+                <li class="d-flex align-items-center">
+                    <span class="left me-3"><i class="icofont-game"></i></span>
+                    <span class="right">05 DRAWS</span>
+                </li>
+                <li class="d-flex align-items-center">
+                    <span class="left me-3"><i class="icofont-workers-group"></i></span>
+                    <span class="right">02 PLAYS</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ===========Player  Section start Here========== -->
+    <div class="player-section padding-top padding-bottom bg-attachment" style="background-image: url({{ asset('assets/images/video/bg.jpg') }})">
+        <div class="container">
+            <div class="section-header">
+                <h2>TEAM Members</h2>
+            </div>
+        <a class="btn btn-success" href="{{ path('Addpart')}}" style="margin-bottom: 20px">ADD MEMBER</a>
+
+            <div class="section-wrapper">
+                <div class="row g-4 justify-content-center">
+            {% for u in membre %}
+
+                    <div class="col-lg-4 col-sm-6 col-12">
+                        <div class="player-item" >
+                            <div class="player-inner" >
+                                <div class="player-thumb">
+                                    <img src="{{ asset('assets/images/match/bg-2.jpg') }}"  alt="player-img">
+                                </div>
+                                <div class="player-content text-center" >
+                                    <div class="player-info-list">
+                                        <h3 class="mb-0"><p style="color: #7827ff">Member name:</p> {{ u.getNom() }}</h3>
+                                        <h3 class="mb-1"><p style="color: #7827ff">Username:</p> {{ u.getUsername() }}</h3>
+
+                                        <a class="btn btn-danger" href="{{ path('deleteMembre',{'id':u.getUsername})}}">Delete membre</a>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+            {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ===========Player  Section Ends Here========== -->
+{% endfor %}
+{% endblock %}

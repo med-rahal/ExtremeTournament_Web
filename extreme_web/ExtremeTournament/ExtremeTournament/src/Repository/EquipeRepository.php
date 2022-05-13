@@ -45,6 +45,27 @@ class EquipeRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByNomEquipe($equipe)
+    {
+        $em=$this->getEntityManager();
+        $query=$em->createQuery('select e from APP\Entity\Equipe e where e.nom_equipe=:id')
+        ->setParameter('id',$equipe);
+        return $query->getResult();
+    }
+
+
+    public function findEntitiesByString($str){
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT p
+                FROM APP\Entity\Equipe p
+                WHERE p.nom_equipe LIKE :str'
+            )
+            ->setParameter('str', '%'.$str.'%')
+            ->getResult();
+    }
+
+
     // /**
     //  * @return Equipe[] Returns an array of Equipe objects
     //  */

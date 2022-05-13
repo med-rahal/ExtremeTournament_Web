@@ -64,7 +64,19 @@
                 <img src="{{ asset('assets/img/placeholders/headers/dashboard_header.jpg ') }}" alt="header image" class="animation-pulseSlow">
             </div>
             <!-- END Dashboard Header -->
+            <div class="robust-content content container-fluid">
 
+
+                <div class="content-wrapper">
+                    <div id="div_chart"></div>
+                    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+                    <script type="text/javascript">
+                        {{ gc_draw(piechart, 'div_chart') }}
+                    </script>
+
+                </div>
+
+            </div>
             <!-- Mini Top Stats Row -->
             <div class="row">
                 <div class="col-sm-6 col-lg-3">
